@@ -1,0 +1,30 @@
+enterprise-doc-intelligence/
+├── config/
+│   └── settings.py              # Environment vars, chunk sizes, Pinecone index names, hyperparams
+├── scripts/
+│   ├── ingest_doc.py            # Document ingestion & Pinecone vector indexing runner
+│   └── generate_synthetic_pdfs.py # Synthetic document generator for testing/evaluation
+├── src/
+│   ├── ingestion/
+│   │   ├── parser.py            # [Module A] PyMuPDF layout parser & Markdown table extractor
+│   │   └── chunker.py           # Recursive text splitting logic
+│   ├── retrieval/
+│   │   ├── vector_store.py      # Pinecone dense search handler (bge-large)
+│   │   ├── sparse_store.py      # BM25 index builder & ranker
+│   │   └── hybrid_reranker.py   # [Module B] RRF fusion & Cross-Encoder reranking
+│   ├── training/
+│   │   ├── dataset_prep.py      # Formats PDF Q&A pairs into instruction JSONL
+│   │   └── train_qlora.py       # [Module C] SFTTrainer script with BitsAndBytes & PEFT
+│   ├── api/
+│   │   ├── schema.py            # Pydantic data models for input/output contracts
+│   │   └── main.py              # [Module D] FastAPI endpoints, Instructor stream, Redis cache
+│   └── eval/
+│       └── evaluate_ragas.py    # RAGAS metrics script (faithfulness, context recall)
+├── tests/
+│   ├── unit/                    # Pytest unit tests for chunker and parser
+│   │   └── test_ingestion.py
+│   └── integration/             # Integration tests for hybrid search retrieval pipeline
+│       └── test_retrieval.py
+├── Dockerfile                   # vLLM/FastAPI container definition
+├── docker-compose.yml           # Local dev setup (FastAPI + Redis + ChromaDB)
+└── requirements.txt

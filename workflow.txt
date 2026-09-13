@@ -1,0 +1,274 @@
+Step 1: Environment Setup
+Open your Mac terminal and create a dedicated virtual environment.
+
+# 1. Navigate to your project root
+cd enterprise-doc-intelligence
+
+# 2. Create and activate Python virtual environment
+python3 -m venv venv
+source venv/bin/activate
+
+# 3. Upgrade pip and install dependencies
+pip install --upgrade pip
+pip install -r requirements.txt
+
+
+Create a .env file in your root folder:
+
+cat <<EOF > .env
+PINECONE_API_KEY=your_actual_pinecone_api_key_here
+PINECONE_INDEX_NAME=doc-intelligence
+EMBEDDING_MODEL_NAME=BAAI/bge-large-en-v1.5
+RERANKER_MODEL_NAME=BAAI/bge-reranker-large
+BASE_MODEL_NAME=mistralai/Mistral-7B-Instruct-v0.2
+REDIS_HOST=localhost
+REDIS_PORT=6379
+EOF
+
+
+Run this in your terminal to spin up the Colima VM and Docker socket:
+
+colima start
+
+Start a local Redis instance using Docker:
+
+docker run -d --name redis_cache -p 6379:6379 redis:7-alpine
+
+Verify it's running:
+
+docker ps
+
+
+Step 3: Serve the Local LLM via Ollama
+Download and launch Ollama on your Mac to host Mistral-7B locally with Apple Metal GPU acceleration.
+
+Install Ollama from ollama.com (or via Homebrew: brew install ollama).
+
+run below command in new terminal to start ollama server:
+
+ollama serve
+
+Pull and start the Mistral model in a separate terminal window:
+
+ollama run mistral
+
+Ollama automatically exposes an OpenAI-compatible API endpoint at http://localhost:11434/v1.
+
+Quick update in src/api/main.py: Ensure the OpenAI client base URL points to port 11434
+
+client = instructor.from_openai(
+    OpenAI(base_url="http://localhost:11434/v1", api_key="ollama"),
+    mode=instructor.Mode.JSON
+)
+
+
+Step 4: Test Document Ingestion & Chunking (Offline)
+Place any sample financial PDF (e.g., sample_report.pdf) in your root directory and run the parser script:
+
+Bash
+python -c "
+from src.ingestion.parser import DocumentIngestor
+ingestor = DocumentIngestor()
+text = ingestor.parse_pdf('/Users/ashishkumar/Downloads/Form10K.pdf')
+chunks = ingestor.create_chunks(text)
+print(f'Successfully parsed PDF into {len(chunks)} chunks.')
+print('Sample Chunk:', chunks[0][:200])
+"
+
+
+Add a real Pinecone API Key to .env
+
+Add your actual API key from the Pinecone dashboard into your .env file in the root directory:
+
+Code snippet
+PINECONE_API_KEY=pcsk_your_actual_pinecone_api_key_here
+PINECONE_INDEX_NAME=doc-intelligence
+
+To generate a Pinecone API key:
+
+Sign Up or Log In: Go to the Pinecone Console and log into your account (or create a free Starter account).
+
+Navigate to API Keys: Select your project from the console, then click API Keys in the left sidebar menu.
+
+Create API Key: Click the Create API Key button at the top right of the page.
+
+Configure Key: Enter a descriptive name for your key (e.g., doc-intelligence-dev) and select the appropriate role permissions if prompted (default is usually ProjectEditor).
+
+Copy and Save: Copy the newly generated key value (starts with pcsk_ or pckey_) and immediately paste it into your project's .env file under PINECONE_API_KEY.
+
+Note: Store your key securely; Pinecone will only show the full key value at the time of creation.
+
+
+
+
+Option 1: Create the Index via Pinecone Console (Recommended)
+Open the Pinecone Console.
+
+Click Create Index.
+
+Fill in the index configuration:
+
+Index Name: doc-intelligence
+
+Dimensions: 1024 (must match bge-large-en-v1.5)
+
+Metric: cosine
+
+Setup: Select Serverless (AWS us-east-1 region for free tier).
+
+Click Create Index and wait ~10 seconds for provisioning.
+
+Option 2: Update src/retrieval/vector_store.py for Auto-Creation & Graceful Fallback
+To prevent Uvicorn from crashing whenever an index is missing or provisioned dynamically, update src/retrieval/vector_store.py to auto-create the index if missing:
+
+# Check if index exists; create it automatically if missing
+active_indexes = [idx.name for idx in self.pc.list_indexes()]
+if settings.PINECONE_INDEX_NAME not in active_indexes:
+    self.pc.create_index(
+        name=settings.PINECONE_INDEX_NAME,
+        dimension=1024,  # Matches bge-large-en-v1.5
+        metric="cosine",
+        spec=ServerlessSpec(cloud="aws", region="us-east-1")
+    )
+
+
+Run the Ingestion Pipeline
+
+Execute the script from your project root in terminal:
+
+Bash
+python -m scripts.ingest_doc
+
+
+Step 5: Start the FastAPI Production Server
+Launch your backend API server using Uvicorn:
+
+Bash
+uvicorn src.api.main:app --reload --host 0.0.0.0 --port 8000
+You will see output indicating the server is live:
+
+INFO:     Will watch for changes in these directories: ['/Users/ashishkumar/github/enterprise-doc-intelligence']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [19759] using StatReload
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 391/391 [00:00<00:00, 7763.96it/s]
+Loading weights: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 393/393 [00:00<00:00, 12208.73it/s]
+INFO:     Started server process [19761]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+
+
+Figure out how to do below steps
+
+Run RAGAS Evaluation
+python src/eval/evaluate_ragas.py
+
+Key Requirement for RAGAS Evaluation
+RAGAS uses an LLM as a judge under the hood to compute evaluation metrics.
+
+If using OpenAI: Ensure your OPENAI_API_KEY is exported in your environment or present in your .env file before running the script:
+
+Bash
+export OPENAI_API_KEY="your-openai-api-key"
+If using local Ollama: RAGAS can be configured with a local LangChain model wrapper, but for standard baseline testing, passing a valid OpenAI API key provides the most reliable evaluation scoring.
+
+----------------------------------------------------------------------
+This error occurs because running a Python script directly via python path/to/script.py adds that script's directory (src/eval/) to sys.path instead of your project root.
+
+Method 1: Run as a Module (Recommended)
+Run the script from your project root using the -m flag:
+
+Bash
+python -m src.eval.evaluate_ragas
+Method 2: Update src/eval/evaluate_ragas.py with Dynamic Path Resolution
+Add sys.path resolution at the very top of src/eval/evaluate_ragas.py so it works regardless of how it's executed:
+
+import os
+import sys
+from pathlib import Path
+
+# Add project root directory to sys.path
+project_root = str(Path(__file__).resolve().parents[2])
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
+
+from datasets import Dataset
+from ragas import evaluate
+from ragas.metrics import faithfulness, answer_relevancy, context_recall
+from config.settings import settings
+
+----------------------------------------------------------------------------
+
+The evaluation will fail with an openai.RateLimitError (429: insufficient_quota) because your OpenAI API key does not have an active billing credit balance.
+
+You can fix this by configuring RAGAS to use your local Ollama instance (mistral) as the evaluation judge for free.
+
+Option 1: Run RAGAS 100% Locally with Ollama (Free)
+Update src/eval/evaluate_ragas.py to use local Ollama (ChatOllama) and local HuggingFace embeddings (BAAI/bge-large-en-v1.5):
+
+
+Option 2: Add Credits to OpenAI
+If you prefer using OpenAI (gpt-4o / gpt-3.5-turbo) as your evaluation judge:
+
+Go to OpenAI Billing Settings.
+
+Click Add to credit balance and deposit a minimum of $5 USD.
+
+Re-run your original evaluation command: python -m src.eval.evaluate_ragas.
+
+OUTPUT:
+(venv) ashishkumar@Ashishs-MacBook-Air enterprise-doc-intelligence % python src/eval/evaluate_ragas.py
+/Users/ashishkumar/github/enterprise-doc-intelligence/src/eval/evaluate_ragas.py:43: LangChainDeprecationWarning: The class `HuggingFaceEmbeddings` was deprecated in LangChain 0.2.2 and will be removed in 1.0. An updated version of the class exists in the langchain-huggingface package and should be used instead. To use it run `pip install -U langchain-huggingface` and import as `from langchain_huggingface import HuggingFaceEmbeddings`.
+  HuggingFaceEmbeddings(model_name=settings.EMBEDDING_MODEL_NAME)
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 391/391 [00:00<00:00, 17406.89it/s]
+Evaluating: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 3/3 [00:33<00:00, 11.00s/it]
+=== RAGAS Metric Evaluation Results ===
+{'faithfulness': 1.0000, 'answer_relevancy': 0.0000, 'context_recall': 1.0000}
+
+BUG IN ABOVE OUTPUT:
+local RAGAS evaluation pipeline is officially operational. Both faithfulness and context_recall scored a perfect 1.0000 using local Ollama.
+
+Here is how to clean up the deprecation warning and fix the zero score on answer_relevancy.
+
+Why answer_relevancy Scored 0.0000
+RAGAS calculates answer_relevancy by asking the judge model (mistral) to generate 3 candidate questions based only on your generated answer, then embedding those candidate questions and taking the mean cosine similarity against the user's original query.
+
+Local 7B models often format the internal RAGAS question-generation prompt output slightly off-spec (e.g., adding conversational prefixes or missing specific JSON delimiters), causing RAGAS to fail parsing the generated questions and default to 0.0.
+
+FIX:
+Step 1: Fix Deprecation Warning
+Install the modern langchain-huggingface package:
+
+Bash
+pip install -U langchain-huggingface
+Step 2: Refactor src/eval/evaluate_ragas.py
+Update src/eval/evaluate_ragas.py to use the new HuggingFace import and set temperature=0.0 on ChatOllama to improve prompt adherence during relevancy checks.
+
+******* HF hub Warning *******
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+
+Option 1: Log in via Hugging Face CLI (Recommended)
+Get a free read token from your Hugging Face Settings $\rightarrow$ Tokens.
+
+Run the login command in your terminal:
+
+Bash
+huggingface-cli login
+Paste your token when prompted.
+
+Option 2: Add HF_TOKEN to Your .env File
+Add your token directly to your .env file:
+
+Code snippet
+HF_TOKEN=hf_your_actual_token_here
+Pydantic will ignore it, but the huggingface_hub background library will automatically pick it up from your system environment to authenticate all requests.
+
+******* HF hub Warning fix done *******
+--------------------------------------------------------------------------
+
+prepare the synthetic dataset for QLoRA fine-tuning
+Setup QLoRA Training
+
+
+
