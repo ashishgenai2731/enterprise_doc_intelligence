@@ -1,30 +1,40 @@
 enterprise-doc-intelligence/
+├── .dockerignore                 # Build exclusion rules for Docker context
+├── Dockerfile                    # Multi-stage production build for FastAPI & LangGraph runtime
+├── Makefile                      # Command shortcuts (make up, make test, make logs, make clean)
+├── README.md                     # Comprehensive architecture overview, flow diagrams, and setup guide
+├── docker-compose.yml            # Multi-container orchestration (FastAPI API + Redis Cache)
+├── pytest.ini                    # Pytest configuration mapping project root path
+├── requirements.txt              # Production dependency specifications with resolved version ranges
 ├── config/
-│   └── settings.py              # Environment vars, chunk sizes, Pinecone index names, hyperparams
+│   └── settings.py               # Environment variables, Pinecone index configs, and hyperparameters
 ├── scripts/
-│   ├── ingest_doc.py            # Document ingestion & Pinecone vector indexing runner
-│   └── generate_synthetic_pdfs.py # Synthetic document generator for testing/evaluation
+│   ├── ingest_doc.py             # Document ingestion & Pinecone vector indexing runner
+│   └── generate_synthetic_pdfs.py  # Synthetic document generator for evaluation
 ├── src/
-│   ├── ingestion/
-│   │   ├── parser.py            # [Module A] PyMuPDF layout parser & Markdown table extractor
-│   │   └── chunker.py           # Recursive text splitting logic
-│   ├── retrieval/
-│   │   ├── vector_store.py      # Pinecone dense search handler (bge-large)
-│   │   ├── sparse_store.py      # BM25 index builder & ranker
-│   │   └── hybrid_reranker.py   # [Module B] RRF fusion & Cross-Encoder reranking
-│   ├── training/
-│   │   ├── dataset_prep.py      # Formats PDF Q&A pairs into instruction JSONL
-│   │   └── train_qlora.py       # [Module C] SFTTrainer script with BitsAndBytes & PEFT
+│   ├── agents/                   # [LangGraph State Machine Engine]
+│   │   ├── graph.py              # Graph compilation & conditional routing logic (route_audit)
+│   │   ├── nodes.py              # Node functions (rag_analyst, code_executor, auditor)
+│   │   └── tools.py              # Sandboxed Python execution REPL tool (execute_python_calc)
 │   ├── api/
-│   │   ├── schema.py            # Pydantic data models for input/output contracts
-│   │   └── main.py              # [Module D] FastAPI endpoints, Instructor stream, Redis cache
-│   └── eval/
-│       └── evaluate_ragas.py    # RAGAS metrics script (faithfulness, context recall)
-├── tests/
-│   ├── unit/                    # Pytest unit tests for chunker and parser
-│   │   └── test_ingestion.py
-│   └── integration/             # Integration tests for hybrid search retrieval pipeline
-│       └── test_retrieval.py
-├── Dockerfile                   # vLLM/FastAPI container definition
-├── docker-compose.yml           # Local dev setup (FastAPI + Redis + ChromaDB)
-└── requirements.txt
+│   │   ├── main.py               # FastAPI application with REST & SSE streaming endpoints (/stream)
+│   │   └── schema.py             # Pydantic data models for request/response validation
+│   ├── eval/
+│   │   └── evaluate_ragas.py     # RAGAS framework evaluation metrics script
+│   ├── ingestion/
+│   │   ├── chunker.py            # Recursive text chunking logic
+│   │   └── parser.py             # Layout parser & Markdown table extractor
+│   ├── retrieval/
+│   │   ├── hybrid_reranker.py    # Hybrid search fusion (RRF) & Cross-Encoder reranking
+│   │   ├── sparse_store.py       # BM25 sparse index builder & ranker
+│   │   └── vector_store.py       # Pinecone dense search handler
+│   └── training/
+│       ├── dataset_prep.py       # Q&A dataset preparation into instruction JSONL format
+│       └── train_qlora.py        # SFTTrainer script with BitsAndBytes & PEFT QLoRA
+└── tests/
+    ├── integration/
+    │   └── test_retrieval.py     # Live integration tests for Pinecone hybrid retrieval pipeline
+    ├── unit/
+    │   └── test_ingestion.py     # Unit tests for text chunker and document parser
+    ├── test_agent.py             # Unit tests for LangGraph state graph & REPL tools
+    └── test_api.py               # API integration tests covering REST endpoints and SSE streaming
