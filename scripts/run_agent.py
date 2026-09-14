@@ -1,5 +1,9 @@
 import sys
 from pathlib import Path
+from dotenv import load_dotenv
+
+# Load .env variables into system environment for LangSmith tracing
+load_dotenv()
 
 # Add project root to sys.path
 project_root = str(Path(__file__).resolve().parents[1])

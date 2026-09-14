@@ -1,5 +1,14 @@
 import pytest
+import sys
+from pathlib import Path
+
 from src.ingestion.chunker import TextChunker
+
+
+# Add project root directory to sys.path
+project_root = str(Path(__file__).resolve().parents[2])
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
 
 
 def test_chunker_splitting():

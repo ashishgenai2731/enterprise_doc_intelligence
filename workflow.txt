@@ -271,4 +271,99 @@ prepare the synthetic dataset for QLoRA fine-tuning
 Setup QLoRA Training
 
 
+----------------------------------------------------------------
+
+The ModuleNotFoundError: No module named 'src' error occurs because pytest does not automatically add your root project directory to the Python import path (sys.path).
+
+Step 1: Create pytest.ini to Set Python Path
+Create a pytest.ini file in your root project directory (enterprise-doc-intelligence/):
+
+Ini, TOML
+[pytest]
+pythonpath = .
+testpaths = tests
+Step 2: Run Pytest via Python Module
+Run pytest using the python -m flag, which forces Python to include the root directory in sys.path:
+
+Bash
+python -m pytest -v
+
+
+--------------------------------------------------------------------------------------------------------------------
+
+To generate a complete production-grade snapshot of your virtual environment's exact package versions, run the freeze command with your virtual environment activated.
+
+1. Generate Full Dependency Snapshot
+
+Ensure your virtual environment is active and write all installed pinned versions to requirements.txt:
+
+Bash
+# Verify active environment
+source venv/bin/activate
+
+# Snapshot all pinned dependencies
+pip freeze > requirements.txt
+2. Top-Level Only Snapshot (Clean Alternative)
+
+If pip freeze includes too many sub-dependencies and cross-platform build tools, use pip-chill to capture only your explicitly installed packages:
+
+Bash
+# Install pip-chill
+pip install pip-chill
+
+# Snapshot top-level packages only
+pip-chill > requirements.txt
+
+-----------------------------------------------------------------------------------------------------------------
+
+Execute the build command again:
+
+Bash
+docker build -t enterprise-doc-intelligence:latest .
+Once built, launch the container with your .env variables attached:
+
+Bash
+docker run -d -p 8000:8000 --env-file .env enterprise-doc-intelligence:latest
+
+-----------------------------------------------------------------------------------------------------------------
+
+Step 1: Create the docker-compose.yml File
+Create a file named docker-compose.yml in your project root directory (enterprise-doc-intelligence/)
+
+docker-compose.yml is an orchestration script that runs and connects multiple Docker containers—in your case, your FastAPI backend and your Redis cache—as a unified system. Instead of manually starting, configuring, and networking each container through long terminal commands, this single file manages the whole stack at once.
+
+Start the Orchestrated Stack
+Run the compose command again:
+
+Bash
+docker compose up --build -d
+
+Step 3: Verify Running Services
+Check that both containers are running together:
+
+Bash
+docker compose ps
+
+Bash
+# View live combined service logs
+docker compose logs -f
+
+-----------------------------------------------------------------------------------------------------------------
+
+Makefile to simplify your daily development workflow into clean, single-word shortcuts.
+
+How to Use It
+
+Now you can control your entire environment directly from your terminal:
+
+make up — Rebuilds and launches the full API + Redis stack in the background.
+
+make logs — Streams combined live stdout logs across all containers.
+
+make test — Executes the pytest suite locally.
+
+make restart — Tears down services and brings them back up freshly compiled.
+
+make clean — Wipes containers, volumes, and temporary Python cache folders.
+
 

@@ -1,6 +1,7 @@
 import json
 import logging
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 import instructor
 from openai import OpenAI
@@ -89,7 +90,7 @@ def query_document(request: QueryRequest):
 
     # 4. Graceful Redis cache write
     try:
-        redis_client.setex(cache_key, 3600, response.model_dump_json())
+        redis_client.set(cache_key, response.model_dump_json(), ex=3600)
     except Exception as err:
         logger.warning(f"Redis cache write failed: {err}")
 
@@ -122,3 +123,34 @@ def run_agent_analysis(request: AgentAnalysisRequest):
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Agent execution failure: {str(e)}")
+
+
+@app.post("/api/v1/agent/analyze/stream")
+async def stream_agent_analysis(request: AgentAnalysisRequest):
+    """Streams real-time state machine node transitions over SSE."""
+    initial_state = {
+        "user_query": request.query,
+        "next_step": "",
+        "rag_context": [],
+        "calculated_metrics": {},
+        "draft_report": "",
+        "audit_passed": False,
+        "audit_feedback": None,
+        "iteration_count": 0
+    }
+
+    async def event_generator():
+        # Stream events from LangGraph state execution
+        async for event in agent_graph.astream_events(initial_state, version="v2"):
+            kind = event.get("event")
+            name = event.get("name", "")
+
+            # Catch when a graph node starts or finishes
+            if kind == "on_chain_start" and name in ["rag_analyst", "code_executor", "auditor"]:
+                yield f"data: {json.dumps({'status': 'node_start', 'node': name})}\n\n"
+            elif kind == "on_chain_end" and name in ["rag_analyst", "code_executor", "auditor"]:
+                yield f"data: {json.dumps({'status': 'node_complete', 'node': name})}\n\n"
+
+        yield "data: [DONE]\n\n"
+
+    return StreamingResponse(event_generator(), media_type="text/event-stream")

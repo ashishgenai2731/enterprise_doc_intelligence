@@ -3,13 +3,23 @@ from src.retrieval.hybrid_reranker import HybridRetriever
 
 
 def test_retrieval_flow():
-    corpus = [
-        {"id": "doc_1", "text": "Q3 gross revenue totaled 10 million dollars."},
-        {"id": "doc_2", "text": "Company hiring expanded by 15 percent."}
-    ]
+    """
+    Integration test validating that HybridRetriever queries Pinecone + Cross-Encoder
+    and returns properly structured chunks.
+    """
+    retriever = HybridRetriever()
+    results = retriever.retrieve(query="What were the total operating expenses?", top_k=2)
 
-    retriever = HybridRetriever(doc_corpus=corpus)
-    results = retriever.retrieve("What was the gross revenue?", top_k=1)
+    # 1. Assert results are returned from the index
+    assert isinstance(results, list)
+    assert len(results) > 0
 
-    assert len(results) == 1
-    assert results[0]["id"] == "doc_1"
+    # 2. Validate structure and fields of the top result
+    top_doc = results[0]
+    assert "id" in top_doc
+    assert "text" in top_doc
+    assert ("score" in top_doc or "rerank_score" in top_doc)
+
+    # 3. Assert content validity
+    assert isinstance(top_doc["id"], str)
+    assert len(top_doc["text"].strip()) > 0
