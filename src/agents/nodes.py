@@ -2,33 +2,25 @@ import json
 from typing import Dict, Any
 from langchain_ollama import ChatOllama
 from src.agents.state import AgentState
-from src.agents.tools import load_all_agent_tools
+from src.agents.tools import query_financial_docs, call_mcp_python_repl
 
-# Initialize local LLM for agent reasoning steps
-llm = ChatOllama(model="mistral", temperature=0.0)
 
-# Load combined tools (Local RAG + MCP Server tools) and index by tool name
-_tools_list = load_all_agent_tools()
-tools_map = {tool.name: tool for tool in _tools_list}
+def get_llm() -> ChatOllama:
+    """Instantiates a ChatOllama client bound to the active event loop."""
+    return ChatOllama(model="mistral", temperature=0.0)
 
 
 def rag_analyst_node(state: AgentState) -> Dict[str, Any]:
-    """
-    Node 1: RAG Analyst Node
-    Queries Pinecone vector store via HybridRetriever tool using user query or refined search.
-    """
     query = state["user_query"]
     feedback = state.get("audit_feedback")
 
-    # Refine search query if audit previously failed
     search_query = (
         f"{query} {feedback}"
         if (feedback and not state.get("audit_passed", False))
         else query
     )
 
-    rag_tool = tools_map["query_financial_docs"]
-    retrieved_text = rag_tool.invoke({"query": search_query, "top_k": 5})
+    retrieved_text = query_financial_docs.invoke({"query": search_query, "top_k": 5})
 
     return {
         "rag_context": [{"text": retrieved_text}],
@@ -36,15 +28,10 @@ def rag_analyst_node(state: AgentState) -> Dict[str, Any]:
     }
 
 
-def code_executor_node(state: AgentState) -> Dict[str, Any]:
-    """
-    Node 2: Code Execution Node
-    Prompts LLM to generate Python code based on context numbers,
-    then executes via external MCP Server Python REPL tool.
-    """
+async def code_executor_node(state: AgentState) -> Dict[str, Any]:
     query = state["user_query"]
     context_items = state.get("rag_context", [])
-    context_text = "\n".join([item.get("text", "") for item in context_items])
+    context_text = "\n".join([item.get("text", "") for item in context_items if item.get("text")])
 
     prompt = (
         "You are a quantitative financial analyst.\n"
@@ -57,10 +44,10 @@ def code_executor_node(state: AgentState) -> Dict[str, Any]:
         "3. Wrap code inside ```python ``` block."
     )
 
-    response = llm.invoke(prompt)
+    llm = get_llm()
+    response = await llm.ainvoke(prompt)
     raw_response = str(response.content)
 
-    # Extract clean Python snippet from Markdown block
     if "```python" in raw_response:
         code_snippet = raw_response.split("```python")[1].split("```")[0].strip()
     elif "```" in raw_response:
@@ -68,9 +55,7 @@ def code_executor_node(state: AgentState) -> Dict[str, Any]:
     else:
         code_snippet = raw_response.strip()
 
-    # Invoke MCP Server tool dynamically (Note: MCP parameter name is 'code')
-    repl_tool = tools_map["execute_python_calc"]
-    execution_output = repl_tool.invoke({"code": code_snippet})
+    execution_output = await call_mcp_python_repl(code_snippet)
 
     return {
         "calculated_metrics": {
@@ -80,14 +65,10 @@ def code_executor_node(state: AgentState) -> Dict[str, Any]:
     }
 
 
-def auditor_node(state: AgentState) -> Dict[str, Any]:
-    """
-    Node 3: Auditor Node
-    Evaluates groundedness of calculations against source context and produces final report draft.
-    """
+async def auditor_node(state: AgentState) -> Dict[str, Any]:
     query = state["user_query"]
     context_items = state.get("rag_context", [])
-    context_text = "\n".join([item.get("text", "") for item in context_items])
+    context_text = "\n".join([item.get("text", "") for item in context_items if item.get("text")])
     metrics = state.get("calculated_metrics", {})
 
     prompt = (
@@ -101,7 +82,8 @@ def auditor_node(state: AgentState) -> Dict[str, Any]:
         "3. Conclude your response with 'AUDIT_STATUS: PASSED' if accurate, or 'AUDIT_STATUS: FAILED' if hallucinated."
     )
 
-    response = llm.invoke(prompt)
+    llm = get_llm()
+    response = await llm.ainvoke(prompt)
     report = str(response.content)
     is_passed = "AUDIT_STATUS: PASSED" in report.upper()
 

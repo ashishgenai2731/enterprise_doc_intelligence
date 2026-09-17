@@ -4,13 +4,26 @@ from src.retrieval.vector_store import VectorStoreHandler
 from src.retrieval.sparse_store import SparseStoreHandler
 from config.settings import settings
 
+# Global singleton to prevent reloading model weights on every query/node
+_reranker_instance = None
+
+
+def _get_reranker() -> CrossEncoder:
+    global _reranker_instance
+    if _reranker_instance is None:
+        _reranker_instance = CrossEncoder(settings.RERANKER_MODEL_NAME)
+    return _reranker_instance
+
 
 class HybridRetriever:
     def __init__(self, doc_corpus: List[Dict[str, Any]] = None):
         self.vector_store = VectorStoreHandler()
         self.doc_corpus = doc_corpus or []
         self.sparse_store = SparseStoreHandler(corpus=self.doc_corpus) if self.doc_corpus else None
-        self.reranker = CrossEncoder(settings.RERANKER_MODEL_NAME)
+
+    @property
+    def reranker(self) -> CrossEncoder:
+        return _get_reranker()
 
     @staticmethod
     def _reciprocal_rank_fusion(dense_ranks: List[str], sparse_ranks: List[str],

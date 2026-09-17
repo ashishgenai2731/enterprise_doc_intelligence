@@ -367,3 +367,36 @@ make restart — Tears down services and brings them back up freshly compiled.
 make clean — Wipes containers, volumes, and temporary Python cache folders.
 
 
+------------------------------------------------------------------------------------------------
+
+ou are missing the -m flag required when invoking Python scripts using module dot notation (src.mcp.server). Without it, Python looks for a file literally named src.mcp.server.
+
+Run either of the following commands from your project root:
+
+Bash
+# Option 1: Module syntax (requires -m)
+python -m src.mcp.server
+
+# Option 2: File path syntax
+python src/mcp/server.py
+Note: Because the server uses transport="stdio", running this command directly will keep the terminal open waiting for JSON-RPC messages from standard input. Press Ctrl + C to stop it.
+
+------------------------------------------------------------------------------------------------
+
+Your Docker Virtual Machine has run out of allocated disk space due to accumulated BuildKit build caches, stopped containers, and unused images.
+
+Execute these cleanup commands in your terminal to reclaim disk space:
+
+Bash
+# 1. Clear BuildKit build cache (frees up the /var/lib/docker/tmp directory)
+docker builder prune -a -f
+
+# 2. Prune unused images, containers, networks, and stopped volumes
+docker system prune -a --volumes -f
+Re-run Docker Build
+Once space is reclaimed, launch your containers again:
+
+Bash
+docker-compose up --build -d
+
+---------------------------------------------------------------------------------------------------------

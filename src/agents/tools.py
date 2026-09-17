@@ -1,11 +1,12 @@
+import sys
 import asyncio
-from typing import List
-from langchain_core.tools import BaseTool, tool
-from langchain_mcp_adapters.client import MultiServerMCPClient
+from typing import Dict, Any
+from langchain_core.tools import tool
+from mcp import ClientSession, StdioServerParameters
+from mcp.client.stdio import stdio_client
 
 from src.retrieval.hybrid_reranker import HybridRetriever
 
-# Singleton retriever instance
 _retriever_instance = None
 
 
@@ -20,7 +21,6 @@ def get_retriever() -> HybridRetriever:
 def query_financial_docs(query: str, top_k: int = 5) -> str:
     """
     Queries the 10-K document vector index using hybrid search and cross-encoder reranking.
-    Use this tool to find verified financial facts, figures, and historical textual context.
     """
     try:
         retriever = get_retriever()
@@ -43,23 +43,23 @@ def query_financial_docs(query: str, top_k: int = 5) -> str:
         return f"Error executing retrieval tool: {str(e)}"
 
 
-async def _fetch_mcp_tools() -> List[BaseTool]:
-    """Connects to the MCP server via stdio and dynamically converts tools."""
-    client = MultiServerMCPClient(
-        {
-            "python_repl": {
-                "command": "python",
-                "args": ["-m", "src.mcp.server"],
-                "transport": "stdio",
-            }
-        }
+async def call_mcp_python_repl(code_snippet: str) -> str:
+    """Invokes the standalone MCP Server tool over JSON-RPC stdio on the active event loop."""
+    server_params = StdioServerParameters(
+        command="python",
+        args=["-m", "src.mcp.server"],
+        env=None
     )
-    return await client.get_tools()
 
+    async with stdio_client(server_params) as (read_stream, write_stream):
+        async with ClientSession(read_stream, write_stream) as session:
+            await session.initialize()
 
-def load_all_agent_tools() -> List[BaseTool]:
-    """
-    Combines in-process LangChain tools with dynamically loaded MCP server tools.
-    """
-    mcp_tools = asyncio.run(_fetch_mcp_tools())
-    return [query_financial_docs] + mcp_tools
+            result = await session.call_tool(
+                "execute_python_calc",
+                arguments={"code": code_snippet}
+            )
+
+            if isinstance(result.content, list) and len(result.content) > 0:
+                return result.content[0].text
+            return str(result.content)

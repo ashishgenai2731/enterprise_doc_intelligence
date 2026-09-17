@@ -98,8 +98,8 @@ def query_document(request: QueryRequest):
 
 
 @app.post("/api/v1/agent/analyze", response_model=AgentAnalysisResponse)
-def run_agent_analysis(request: AgentAnalysisRequest):
-    """Triggers the LangGraph Financial Analyst & Auditor state machine."""
+async def run_agent_analysis(request: AgentAnalysisRequest):
+    """Triggers the LangGraph Financial Analyst & Auditor state machine asynchronously."""
     try:
         initial_state = {
             "user_query": request.query,
@@ -112,8 +112,8 @@ def run_agent_analysis(request: AgentAnalysisRequest):
             "iteration_count": 0
         }
 
-        # Synchronous invocation running on threadpool
-        final_state = agent_graph.invoke(initial_state)
+        # Asynchronous invocation required for async MCP execution nodes
+        final_state = await agent_graph.ainvoke(initial_state)
 
         return AgentAnalysisResponse(
             query=request.query,
@@ -122,12 +122,13 @@ def run_agent_analysis(request: AgentAnalysisRequest):
             iterations=final_state.get("iteration_count", 0)
         )
     except Exception as e:
+        logger.error(f"Agent execution failure: {str(e)}", exc_info=True)
         raise HTTPException(status_code=500, detail=f"Agent execution failure: {str(e)}")
 
 
 @app.post("/api/v1/agent/analyze/stream")
 async def stream_agent_analysis(request: AgentAnalysisRequest):
-    """Streams real-time state machine node transitions over SSE."""
+    """Streams real-time state machine node transitions and final payload over SSE."""
     initial_state = {
         "user_query": request.query,
         "next_step": "",
@@ -140,6 +141,9 @@ async def stream_agent_analysis(request: AgentAnalysisRequest):
     }
 
     async def event_generator():
+        final_report = ""
+        audit_passed = False
+
         # Stream events from LangGraph state execution
         async for event in agent_graph.astream_events(initial_state, version="v2"):
             kind = event.get("event")
@@ -151,6 +155,15 @@ async def stream_agent_analysis(request: AgentAnalysisRequest):
             elif kind == "on_chain_end" and name in ["rag_analyst", "code_executor", "auditor"]:
                 yield f"data: {json.dumps({'status': 'node_complete', 'node': name})}\n\n"
 
+                # Capture state outputs from auditor node completion
+                if name == "auditor":
+                    output = event.get("data", {}).get("output", {})
+                    if isinstance(output, dict):
+                        final_report = output.get("draft_report", final_report)
+                        audit_passed = output.get("audit_passed", audit_passed)
+
+        # Emit final structured payload before closing stream
+        yield f"data: {json.dumps({'status': 'final_result', 'report': final_report, 'audit_passed': audit_passed})}\n\n"
         yield "data: [DONE]\n\n"
 
     return StreamingResponse(event_generator(), media_type="text/event-stream")

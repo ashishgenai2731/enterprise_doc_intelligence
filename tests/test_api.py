@@ -1,14 +1,14 @@
-import pytest
 import sys
 from pathlib import Path
-
+import pytest
 from fastapi.testclient import TestClient
-from src.api.main import app
+from httpx import AsyncClient, ASGITransport
 
-# Add project root directory to sys.path
-project_root = str(Path(__file__).resolve().parents[2])
+project_root = str(Path(__file__).resolve().parent.parent)
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
+
+from src.api.main import app
 
 client = TestClient(app)
 
@@ -28,12 +28,14 @@ def test_health_and_query_endpoint():
     assert isinstance(data["source_chunks"], list)
 
 
-def test_agent_analyze_endpoint():
-    """Validates full execution of the synchronous agent state machine."""
-    response = client.post(
-        "/api/v1/agent/analyze",
-        json={"query": "Calculate percentage change in operating expenses between 2014 and 2015."}
-    )
+@pytest.mark.asyncio
+async def test_agent_analyze_endpoint():
+    """Validates full execution of the asynchronous agent state machine."""
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
+        response = await ac.post(
+            "/api/v1/agent/analyze",
+            json={"query": "Calculate percentage change in operating expenses between 2014 and 2015."}
+        )
     assert response.status_code == 200
     data = response.json()
 
@@ -43,17 +45,19 @@ def test_agent_analyze_endpoint():
     assert data["iterations"] > 0
 
 
-def test_agent_stream_endpoint():
+@pytest.mark.asyncio
+async def test_agent_stream_endpoint():
     """Validates real-time SSE event streaming from node transitions."""
-    with client.stream(
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
+        async with ac.stream(
             "POST",
             "/api/v1/agent/analyze/stream",
             json={"query": "What were 2015 operating expenses?"}
-    ) as response:
-        assert response.status_code == 200
-        events = [line for line in response.iter_lines() if line]
+        ) as response:
+            assert response.status_code == 200
+            events = [line async for line in response.aiter_lines() if line]
 
-        # Verify node status events and closure tag
-        assert any("node_start" in event for event in events)
-        assert any("node_complete" in event for event in events)
-        assert any("[DONE]" in event for event in events)
+            # Verify node status events and closure tag
+            assert any("node_start" in event for event in events)
+            assert any("node_complete" in event for event in events)
+            assert any("[DONE]" in event for event in events)
