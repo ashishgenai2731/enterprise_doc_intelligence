@@ -1,11 +1,11 @@
-import sys
-import io
-import math
-from typing import Dict, Any
-from langchain_core.tools import tool
+import asyncio
+from typing import List
+from langchain_core.tools import BaseTool, tool
+from langchain_mcp_adapters.client import MultiServerMCPClient
+
 from src.retrieval.hybrid_reranker import HybridRetriever
 
-# Singleton retriever instance to avoid re-initializing models across agent calls
+# Singleton retriever instance
 _retriever_instance = None
 
 
@@ -43,43 +43,23 @@ def query_financial_docs(query: str, top_k: int = 5) -> str:
         return f"Error executing retrieval tool: {str(e)}"
 
 
-@tool
-def execute_python_calc(code_snippet: str) -> str:
+async def _fetch_mcp_tools() -> List[BaseTool]:
+    """Connects to the MCP server via stdio and dynamically converts tools."""
+    client = MultiServerMCPClient(
+        {
+            "python_repl": {
+                "command": "python",
+                "args": ["-m", "src.mcp.server"],
+                "transport": "stdio",
+            }
+        }
+    )
+    return await client.get_tools()
+
+
+def load_all_agent_tools() -> List[BaseTool]:
     """
-    Executes a Python code snippet to compute quantitative financial formulas
-    (e.g., operating margin, YoY percentage growth, CAGR, interest coverage ratio).
-
-    The code must assign its final answer to a variable named `result` or print it.
+    Combines in-process LangChain tools with dynamically loaded MCP server tools.
     """
-    buffer = io.StringIO()
-    sys.stdout = buffer
-
-    # Restrict execution scope for safe local operations
-    safe_globals = {
-        "math": math,
-        "abs": abs,
-        "round": round,
-        "min": min,
-        "max": max,
-        "sum": sum,
-        "pow": pow,
-        "len": len,
-    }
-    local_scope: Dict[str, Any] = {}
-
-    try:
-        exec(code_snippet, safe_globals, local_scope)
-        sys.stdout = sys.__stdout__
-
-        printed_output = buffer.getvalue().strip()
-
-        if "result" in local_scope:
-            return f"Calculation Result: {local_scope['result']}"
-        elif printed_output:
-            return f"Execution Output:\n{printed_output}"
-        else:
-            return "Execution successful, but no 'result' variable or print statement was produced."
-
-    except Exception as e:
-        sys.stdout = sys.__stdout__
-        return f"Execution Error: {type(e).__name__} - {str(e)}"
+    mcp_tools = asyncio.run(_fetch_mcp_tools())
+    return [query_financial_docs] + mcp_tools

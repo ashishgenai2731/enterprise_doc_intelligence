@@ -1,15 +1,12 @@
 import json
 from typing import Dict, Any
+# from langchain_community.chat_models import ChatOllama
 from langchain_ollama import ChatOllama
 from src.agents.state import AgentState
-from src.agents.tools import load_all_agent_tools
+from src.agents.tools_depricated_without_mcp_adapters import query_financial_docs, execute_python_calc
 
 # Initialize local LLM for agent reasoning steps
 llm = ChatOllama(model="mistral", temperature=0.0)
-
-# Load combined tools (Local RAG + MCP Server tools) and index by tool name
-_tools_list = load_all_agent_tools()
-tools_map = {tool.name: tool for tool in _tools_list}
 
 
 def rag_analyst_node(state: AgentState) -> Dict[str, Any]:
@@ -21,26 +18,21 @@ def rag_analyst_node(state: AgentState) -> Dict[str, Any]:
     feedback = state.get("audit_feedback")
 
     # Refine search query if audit previously failed
-    search_query = (
-        f"{query} {feedback}"
-        if (feedback and not state.get("audit_passed", False))
-        else query
-    )
+    search_query = f"{query} {feedback}" if (
+                feedback and not state.get("audit_passed", False)) else query
 
-    rag_tool = tools_map["query_financial_docs"]
-    retrieved_text = rag_tool.invoke({"query": search_query, "top_k": 5})
+    retrieved_text = query_financial_docs.invoke({"query": search_query, "top_k": 5})
 
     return {
         "rag_context": [{"text": retrieved_text}],
-        "iteration_count": state.get("iteration_count", 0) + 1,
+        "iteration_count": state.get("iteration_count", 0) + 1
     }
 
 
 def code_executor_node(state: AgentState) -> Dict[str, Any]:
     """
     Node 2: Code Execution Node
-    Prompts LLM to generate Python code based on context numbers,
-    then executes via external MCP Server Python REPL tool.
+    Prompts LLM to generate Python code based on context numbers, then executes via sandboxed Python REPL tool.
     """
     query = state["user_query"]
     context_items = state.get("rag_context", [])
@@ -68,14 +60,12 @@ def code_executor_node(state: AgentState) -> Dict[str, Any]:
     else:
         code_snippet = raw_response.strip()
 
-    # Invoke MCP Server tool dynamically (Note: MCP parameter name is 'code')
-    repl_tool = tools_map["execute_python_calc"]
-    execution_output = repl_tool.invoke({"code": code_snippet})
+    execution_output = execute_python_calc.invoke({"code_snippet": code_snippet})
 
     return {
         "calculated_metrics": {
             "generated_code": code_snippet,
-            "execution_result": execution_output,
+            "execution_result": execution_output
         }
     }
 
@@ -108,5 +98,5 @@ def auditor_node(state: AgentState) -> Dict[str, Any]:
     return {
         "draft_report": report,
         "audit_passed": is_passed,
-        "audit_feedback": report if not is_passed else None,
+        "audit_feedback": report if not is_passed else None
     }
