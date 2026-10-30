@@ -30,6 +30,15 @@ async def test_mcp_python_executor_tool_error_handling():
     assert "division by zero" in output.lower()
 
 
+@pytest.mark.asyncio
+async def test_mcp_python_executor_times_out_on_infinite_loop():
+    """CPU-bound runaway code must be killed, not hang the request."""
+    output = await call_mcp_python_repl("while True:\n    pass", timeout_sec=3)
+
+    assert "EXECUTION_ERROR" in output
+    assert "timed out" in output
+
+
 def test_agent_graph_compilation():
     """Verifies all registered state nodes and conditional edges compile successfully."""
     graph = build_financial_agent_graph()

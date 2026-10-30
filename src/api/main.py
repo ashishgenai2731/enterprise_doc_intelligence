@@ -2,6 +2,7 @@ import json
 import logging
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import StreamingResponse
+from typing import List
 from pydantic import BaseModel
 import instructor
 from openai import OpenAI
@@ -10,6 +11,7 @@ from src.api.schema import QueryRequest, DocumentInsightResponse
 from src.retrieval.hybrid_reranker import HybridRetriever
 from config.settings import settings
 from src.agents.graph import build_financial_agent_graph
+from src.agents.state import initial_agent_state
 
 logger = logging.getLogger("uvicorn")
 
@@ -43,6 +45,8 @@ class AgentAnalysisResponse(BaseModel):
     report: str
     audit_passed: bool
     iterations: int
+    sources: List[str] = []
+    unsupported_claims: List[str] = []
 
 
 @app.post("/api/v1/query", response_model=DocumentInsightResponse)
@@ -101,16 +105,7 @@ def query_document(request: QueryRequest):
 async def run_agent_analysis(request: AgentAnalysisRequest):
     """Triggers the LangGraph Financial Analyst & Auditor state machine asynchronously."""
     try:
-        initial_state = {
-            "user_query": request.query,
-            "next_step": "",
-            "rag_context": [],
-            "calculated_metrics": {},
-            "draft_report": "",
-            "audit_passed": False,
-            "audit_feedback": None,
-            "iteration_count": 0
-        }
+        initial_state = initial_agent_state(request.query)
 
         # Asynchronous invocation required for async MCP execution nodes
         final_state = await agent_graph.ainvoke(initial_state)
@@ -119,7 +114,9 @@ async def run_agent_analysis(request: AgentAnalysisRequest):
             query=request.query,
             report=final_state.get("draft_report", ""),
             audit_passed=final_state.get("audit_passed", False),
-            iterations=final_state.get("iteration_count", 0)
+            iterations=final_state.get("iteration_count", 0),
+            sources=final_state.get("sources", []),
+            unsupported_claims=final_state.get("unsupported_claims", []),
         )
     except Exception as e:
         logger.error(f"Agent execution failure: {str(e)}", exc_info=True)
@@ -129,20 +126,12 @@ async def run_agent_analysis(request: AgentAnalysisRequest):
 @app.post("/api/v1/agent/analyze/stream")
 async def stream_agent_analysis(request: AgentAnalysisRequest):
     """Streams real-time state machine node transitions and final payload over SSE."""
-    initial_state = {
-        "user_query": request.query,
-        "next_step": "",
-        "rag_context": [],
-        "calculated_metrics": {},
-        "draft_report": "",
-        "audit_passed": False,
-        "audit_feedback": None,
-        "iteration_count": 0
-    }
+    initial_state = initial_agent_state(request.query)
 
     async def event_generator():
         final_report = ""
         audit_passed = False
+        sources, unsupported_claims = [], []
 
         # Stream events from LangGraph state execution
         async for event in agent_graph.astream_events(initial_state, version="v2"):
@@ -161,9 +150,18 @@ async def stream_agent_analysis(request: AgentAnalysisRequest):
                     if isinstance(output, dict):
                         final_report = output.get("draft_report", final_report)
                         audit_passed = output.get("audit_passed", audit_passed)
+                        sources = output.get("sources", sources)
+                        unsupported_claims = output.get("unsupported_claims", unsupported_claims)
 
         # Emit final structured payload before closing stream
-        yield f"data: {json.dumps({'status': 'final_result', 'report': final_report, 'audit_passed': audit_passed})}\n\n"
+        final_payload = {
+            'status': 'final_result',
+            'report': final_report,
+            'audit_passed': audit_passed,
+            'sources': sources,
+            'unsupported_claims': unsupported_claims,
+        }
+        yield f"data: {json.dumps(final_payload)}\n\n"
         yield "data: [DONE]\n\n"
 
     return StreamingResponse(event_generator(), media_type="text/event-stream")

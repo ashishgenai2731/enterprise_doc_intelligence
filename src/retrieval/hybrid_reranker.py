@@ -1,8 +1,11 @@
+import logging
 from typing import List, Dict, Any
 from sentence_transformers import CrossEncoder
 from src.retrieval.vector_store import VectorStoreHandler
-from src.retrieval.sparse_store import SparseStoreHandler
+from src.retrieval.sparse_store import SparseStoreHandler, load_corpus
 from config.settings import settings
+
+logger = logging.getLogger(__name__)
 
 # Global singleton to prevent reloading model weights on every query/node
 _reranker_instance = None
@@ -16,10 +19,18 @@ def _get_reranker() -> CrossEncoder:
 
 
 class HybridRetriever:
-    def __init__(self, doc_corpus: List[Dict[str, Any]] = None):
-        self.vector_store = VectorStoreHandler()
-        self.doc_corpus = doc_corpus or []
-        self.sparse_store = SparseStoreHandler(corpus=self.doc_corpus) if self.doc_corpus else None
+    def __init__(self, doc_corpus: List[Dict[str, Any]] = None, vector_store=None):
+        self.vector_store = vector_store or VectorStoreHandler()
+        # Default to the on-disk corpus written at ingestion time, so BM25 is live in the app
+        self.doc_corpus = doc_corpus if doc_corpus is not None else load_corpus(settings.CORPUS_PATH)
+        if self.doc_corpus:
+            self.sparse_store = SparseStoreHandler(corpus=self.doc_corpus)
+        else:
+            self.sparse_store = None
+            logger.warning(
+                "No BM25 corpus at %s - running dense-only. Run scripts/export_corpus.py.",
+                settings.CORPUS_PATH,
+            )
 
     @property
     def reranker(self) -> CrossEncoder:

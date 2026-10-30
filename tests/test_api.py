@@ -43,6 +43,8 @@ async def test_agent_analyze_endpoint():
     assert "audit_passed" in data
     assert isinstance(data["iterations"], int)
     assert data["iterations"] > 0
+    assert isinstance(data["sources"], list)
+    assert isinstance(data["unsupported_claims"], list)
 
 
 @pytest.mark.asyncio
