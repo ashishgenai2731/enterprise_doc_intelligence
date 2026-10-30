@@ -1,10 +1,13 @@
 import sys
 import asyncio
+from datetime import timedelta
 from typing import Dict, Any
 from langchain_core.tools import tool
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
+from mcp.shared.exceptions import McpError
 
+from config.settings import settings
 from src.retrieval.hybrid_reranker import HybridRetriever
 
 _retriever_instance = None
@@ -43,10 +46,16 @@ def query_financial_docs(query: str, top_k: int = 5) -> str:
         return f"Error executing retrieval tool: {str(e)}"
 
 
-async def call_mcp_python_repl(code_snippet: str) -> str:
-    """Invokes the standalone MCP Server tool over JSON-RPC stdio on the active event loop."""
+async def call_mcp_python_repl(code_snippet: str, timeout_sec: float = settings.SANDBOX_TIMEOUT_SEC) -> str:
+    """
+    Invokes the standalone MCP Server tool over JSON-RPC stdio on the active event loop.
+
+    Each call gets a fresh server process: generated code never shares state with the API,
+    and on timeout leaving the stdio_client context kills the whole process tree, which
+    also stops CPU-bound code like `while True: pass` that a thread could not interrupt.
+    """
     server_params = StdioServerParameters(
-        command="python",
+        command=sys.executable,  # same venv interpreter as the API, not whatever `python` is on PATH
         args=["-m", "src.mcp.server"],
         env=None
     )
@@ -55,10 +64,14 @@ async def call_mcp_python_repl(code_snippet: str) -> str:
         async with ClientSession(read_stream, write_stream) as session:
             await session.initialize()
 
-            result = await session.call_tool(
-                "execute_python_calc",
-                arguments={"code": code_snippet}
-            )
+            try:
+                result = await session.call_tool(
+                    "execute_python_calc",
+                    arguments={"code": code_snippet},
+                    read_timeout_seconds=timedelta(seconds=timeout_sec),
+                )
+            except McpError as err:
+                return f"EXECUTION_ERROR: sandbox call failed or timed out after {timeout_sec:g}s ({err})"
 
             if isinstance(result.content, list) and len(result.content) > 0:
                 return result.content[0].text

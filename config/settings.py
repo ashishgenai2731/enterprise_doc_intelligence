@@ -22,6 +22,13 @@ class Settings(BaseSettings):
     CHUNK_SIZE: int = 512
     CHUNK_OVERLAP: int = 50
 
+    # Local copy of every indexed chunk ({'id', 'text'} per line).
+    # BM25 needs the raw text in memory; Pinecone only gives us vectors back.
+    CORPUS_PATH: str = "data/corpus.jsonl"
+
+    # Hard wall-clock limit for one sandboxed Python execution over MCP
+    SANDBOX_TIMEOUT_SEC: float = 10.0
+
     # Redis Cache Configuration
     REDIS_HOST: str = "localhost"
     REDIS_PORT: int = 6379

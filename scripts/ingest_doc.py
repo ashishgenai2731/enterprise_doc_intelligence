@@ -1,7 +1,8 @@
-import uuid
 from pathlib import Path
+from config.settings import settings
 from src.ingestion.parser import DocumentIngestor
 from src.retrieval.vector_store import VectorStoreHandler
+from src.retrieval.sparse_store import append_to_corpus
 
 
 def ingest_pdf(pdf_path: str):
@@ -16,7 +17,9 @@ def ingest_pdf(pdf_path: str):
     doc_name = Path(pdf_path).name
     for i, chunk_text in enumerate(chunks):
         formatted_chunks.append({
-            "id": f"{doc_name}-chunk-{i}-{uuid.uuid4().hex[:6]}",
+            # Deterministic ID: re-ingesting the same file overwrites instead of duplicating,
+            # and the BM25 corpus and Pinecone always agree on IDs (needed for RRF fusion)
+            "id": f"{doc_name}-chunk-{i}",
             "text": chunk_text,
             "metadata": {
                 "source": doc_name,
@@ -28,6 +31,9 @@ def ingest_pdf(pdf_path: str):
     vector_store = VectorStoreHandler()
     vector_store.upsert_chunks(formatted_chunks)
     print(f"Successfully indexed {len(formatted_chunks)} vectors in Pinecone!")
+
+    append_to_corpus(settings.CORPUS_PATH, formatted_chunks)
+    print(f"Saved chunk text to {settings.CORPUS_PATH} for BM25 sparse search.")
 
     # Verification query
     print("\n[4/4] Running sanity check query against index...")
