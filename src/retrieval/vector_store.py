@@ -21,21 +21,24 @@ class VectorStoreHandler:
 
         self.index = self.pc.Index(settings.PINECONE_INDEX_NAME)
 
-    def upsert_chunks(self, chunks: List[Dict[str, Any]]):
+    def upsert_chunks(self, chunks: List[Dict[str, Any]], batch_size: int = 100):
         """Embeds text chunks and upserts them into Pinecone with metadata."""
+        embeddings = self.embed_model.encode([item["text"] for item in chunks], batch_size=32)
+
         vectors_to_upsert = []
-        for item in chunks:
-            vector_embedding = self.embed_model.encode(item["text"]).tolist()
+        for item, vector_embedding in zip(chunks, embeddings):
             metadata = item.get("metadata", {})
             metadata["text"] = item["text"]
 
             vectors_to_upsert.append({
                 "id": item["id"],
-                "values": vector_embedding,
+                "values": vector_embedding.tolist(),
                 "metadata": metadata
             })
 
-        self.index.upsert(vectors=vectors_to_upsert)
+        # Pinecone caps a single request at 2MB / 1000 vectors; 1024-dim vectors need batching
+        for start in range(0, len(vectors_to_upsert), batch_size):
+            self.index.upsert(vectors=vectors_to_upsert[start:start + batch_size])
 
     def query(self, query_text: str, top_k: int = 20) -> List[Dict[str, Any]]:
         """Generates dense vector representation and performs top-K lookup in Pinecone."""

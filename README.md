@@ -55,6 +55,7 @@ An enterprise-grade, stateful multi-agent document intelligence platform built w
 * **Structured, Double-Checked Auditing:** The auditor returns a typed verdict (`passed`, `unsupported_claims`, `retry_query`) instead of a magic string. A deterministic check then verifies every figure in the report appears in the retrieved sources or the sandbox output, so the LLM is not the only judge of its own numbers.
 * **Targeted Self-Correction:** On a failed audit, the next round searches for the specific missing evidence (`retry_query`) and adds it to the earlier context instead of starting over.
 * **Source Citations:** Every figure in the report cites its chunk (`[Source: <chunk id>]`); the API returns the verified `sources` list.
+* **Table-Aware PDF Parsing:** Financial statements are rebuilt from word positions so every row carries its year columns (`Net income — 2015: 53,394; 2014: 39,510; 2013: 37,037`). This survives chunking, where a header-less table row would otherwise be meaningless.
 * **Real-Time Event Streaming:** Server-Sent Events (SSE) via `astream_events` stream live graph state transitions to clients.
 * **End-to-End Observability:** Integrated with LangSmith tracing for node latencies, state payloads, and tool calls.
 
@@ -123,5 +124,5 @@ docker run -d -p 8000:8000 --env-file .env enterprise-doc-intelligence:latest
 
 ## Known Limitations
 
-* **Table parsing loses column headers.** Financial statements are split into one-row tables, so a chunk like `14,329 | 11,993 | 10,830` no longer says which column is which year. This is the main source of wrong answers and the next thing to fix.
 * **Grounded is not the same as correct.** The auditor checks that every figure traces back to a source, not that the model picked the right line item. Measuring correctness needs a question set with known answers.
+* **Table parsing is tuned for SEC-style statements.** Rows are matched to year headers (`2015 2014 2013`) by position; tables whose columns are not years (e.g. geographic segments) are kept as plain text lines.
