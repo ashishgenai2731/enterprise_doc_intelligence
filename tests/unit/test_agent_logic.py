@@ -155,3 +155,36 @@ async def test_auditor_passes_grounded_report_and_keeps_only_real_citations(monk
     assert out["audit_passed"] is True
     assert out["retry_query"] is None
     assert out["sources"] == ["c1"]
+
+
+@pytest.mark.asyncio
+async def test_auditor_fails_figures_without_citations(monkeypatch):
+    verdict = AuditVerdict(summary="Expenses were 38,000 million in 2015.", passed=True)
+    monkeypatch.setattr(nodes, "get_llm", lambda: FakeLLM(verdict))
+
+    state = initial_agent_state("operating expenses 2015")
+    state["rag_context"] = [CORPUS[0]]
+    out = await nodes.auditor_node(state)
+
+    assert out["audit_passed"] is False
+    assert any("not cited" in claim for claim in out["unsupported_claims"])
+
+
+class PromptRecordingLLM(FakeLLM):
+    prompts = []
+
+    async def ainvoke(self, prompt):
+        self.prompts.append(prompt)
+        return self.verdict
+
+
+@pytest.mark.asyncio
+async def test_auditor_retry_prompt_includes_previous_failure(monkeypatch):
+    llm = PromptRecordingLLM(AuditVerdict(summary="No figures found.", passed=False))
+    monkeypatch.setattr(nodes, "get_llm", lambda: llm)
+
+    state = initial_agent_state("operating expenses 2015")
+    state.update(rag_context=[CORPUS[0]], audit_feedback="Figures are not cited")
+    await nodes.auditor_node(state)
+
+    assert "Figures are not cited" in llm.prompts[-1]
