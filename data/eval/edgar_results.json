@@ -1,0 +1,1661 @@
+{
+  "summary": {
+    "questions": 60,
+    "accuracy": 0.5,
+    "accuracy_lookup": 0.5333333333333333,
+    "accuracy_computed": 0.4666666666666667,
+    "audit_pass_rate": 0.7833333333333333,
+    "false_pass_rate": 0.46808510638297873,
+    "wrong_caught_by_audit": 8,
+    "wrong_total": 30,
+    "citation_rate": 0.85,
+    "avg_iterations": 1.7666666666666666,
+    "avg_latency_sec": 99.68666666666668
+  },
+  "results": [
+    {
+      "id": "TXN-2024-total_assets",
+      "type": "lookup",
+      "question": "What was Texas Instruments's total assets as of December 31, 2024, the end of fiscal 2024, in $ millions?",
+      "answer": 35509,
+      "unit": "usd_millions",
+      "correct": false,
+      "audit_passed": true,
+      "sources": [
+        "TXN-FY2024-chunk-363"
+      ],
+      "iterations": 2,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "TXN"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2024
+          ]
+        }
+      },
+      "latency_sec": 157.5,
+      "report": "The total assets of Texas Instruments (TXN) as of December 31, 2024, the end of fiscal 2024, were $18,353 million [Source: TXN-FY2024-chunk-363]."
+    },
+    {
+      "id": "TSLA-2025-total_assets",
+      "type": "lookup",
+      "question": "What was Tesla's total assets as of December 31, 2025, the end of fiscal 2025, in $ millions?",
+      "answer": 137806,
+      "unit": "usd_millions",
+      "correct": false,
+      "audit_passed": false,
+      "sources": [
+        "TSLA-FY2025-chunk-579",
+        "TSLA-FY2025-chunk-917",
+        "TSLA-FY2025-chunk-1016"
+      ],
+      "iterations": 3,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "TSLA"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2025
+          ]
+        }
+      },
+      "latency_sec": 272.3,
+      "report": "Tesla's total assets as of December 31, 2025, the end of fiscal 2025, were approximately $53.516 billion. This figure includes cash and cash equivalents ($16.51 billion), short-term investments ($27.55 billion), foreign currency equivalent ($4.37 billion), unused committed credit amounts ($6.43 billion), pledged assets for 2025 ($3.89 billion), and deferred tax assets for 2025 ($0). The pledged assets for 2024 were subtracted to account for the difference in pledged assets between the two years. [Source: TSLA-FY2025-chunk-579, TSLA-FY2025-chunk-917, TSLA-FY2025-chunk-1016, TSLA-FY2025-calculated-metrics]"
+    },
+    {
+      "id": "ABBV-2023-rd",
+      "type": "lookup",
+      "question": "What was AbbVie's research and development expense in fiscal 2023 (the year ended December 31, 2023), in $ millions?",
+      "answer": 7675,
+      "unit": "usd_millions",
+      "correct": false,
+      "audit_passed": true,
+      "sources": [
+        "ABBV-FY2023-chunk-447"
+      ],
+      "iterations": 1,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "ABBV"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2023
+          ]
+        }
+      },
+      "latency_sec": 95.3,
+      "report": "AbbVie's research and development expense in fiscal 2023 was $7.675 million, as calculated from the provided financial statements [Source: ABBV-FY2023-chunk-447]."
+    },
+    {
+      "id": "GOOGL-2023-net_income",
+      "type": "lookup",
+      "question": "What was Alphabet's net income in fiscal 2023 (the year ended December 31, 2023), in $ millions?",
+      "answer": 73795,
+      "unit": "usd_millions",
+      "correct": false,
+      "audit_passed": true,
+      "sources": [
+        "GOOGL-FY2023-chunk-615"
+      ],
+      "iterations": 2,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "GOOGL"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2023
+          ]
+        }
+      },
+      "latency_sec": 166.6,
+      "report": "The net income for Alphabet in fiscal 2023 was $3.001 billion, as calculated from the provided context [Source: GOOGL-FY2023-chunk-615]."
+    },
+    {
+      "id": "AMZN-2023-operating_income",
+      "type": "lookup",
+      "question": "What was Amazon's operating income in fiscal 2023 (the year ended December 31, 2023), in $ millions?",
+      "answer": 36852,
+      "unit": "usd_millions",
+      "correct": true,
+      "audit_passed": true,
+      "sources": [
+        "AMZN-FY2023-chunk-375",
+        "AMZN-FY2023-chunk-749",
+        "AMZN-FY2023-chunk-413"
+      ],
+      "iterations": 1,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "AMZN"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2023
+          ]
+        }
+      },
+      "latency_sec": 35.0,
+      "report": "Amazon's operating income for fiscal 2023 was $36,852 million, as calculated from the provided financial statements [Source: AMZN-FY2023-chunk-375, AMZN-FY2023-chunk-749, AMZN-FY2023-chunk-413]."
+    },
+    {
+      "id": "NKE-2025-cfo",
+      "type": "lookup",
+      "question": "What was Nike's net cash provided by operating activities in fiscal 2025 (the year ended May 31, 2025), in $ millions?",
+      "answer": 3698,
+      "unit": "usd_millions",
+      "correct": false,
+      "audit_passed": true,
+      "sources": [
+        "NKE-FY2025-chunk-569",
+        "NKE-FY2025-chunk-702",
+        "NKE-FY2025-chunk-559"
+      ],
+      "iterations": 2,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "NKE"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2025
+          ]
+        }
+      },
+      "latency_sec": 69.1,
+      "report": "Nike's net cash provided by operating activities in fiscal 2025 was a decrease of $1,528 million, as calculated from the provided financial statements. This decrease was driven by a decrease in net income, changes in working capital components, and other assets and liabilities [Source: NKE-FY2025-chunk-569, NKE-FY2025-chunk-702, NKE-FY2025-chunk-559]."
+    },
+    {
+      "id": "META-2024-rd",
+      "type": "lookup",
+      "question": "What was Meta Platforms's research and development expense in fiscal 2024 (the year ended December 31, 2024), in $ millions?",
+      "answer": 43873,
+      "unit": "usd_millions",
+      "correct": true,
+      "audit_passed": true,
+      "sources": [
+        "META-FY2024-chunk-904",
+        "META-FY2024-chunk-903"
+      ],
+      "iterations": 2,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "META"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2024
+          ]
+        }
+      },
+      "latency_sec": 202.3,
+      "report": "Meta Platforms's research and development expense in fiscal 2024 was $43,873 million [Source: META-FY2024-chunk-904]. This represents 26.67% of the company's revenue for the same year [Source: META-FY2024-chunk-903]."
+    },
+    {
+      "id": "PFE-2025-revenue",
+      "type": "lookup",
+      "question": "What was Pfizer's total revenue in fiscal 2025 (the year ended December 31, 2025), in $ millions?",
+      "answer": 62579,
+      "unit": "usd_millions",
+      "correct": true,
+      "audit_passed": true,
+      "sources": [
+        "PFE-FY2025-chunk-1769"
+      ],
+      "iterations": 2,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "PFE"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2025
+          ]
+        }
+      },
+      "latency_sec": 123.3,
+      "report": "Pfizer's total revenue for fiscal 2025 was $62,579 million, as reported in the Pfizer (PFE) 10-K for the year ended December 31, 2025 [Source: PFE-FY2025-chunk-1769]."
+    },
+    {
+      "id": "GOOGL-2024-rd",
+      "type": "lookup",
+      "question": "What was Alphabet's research and development expense in fiscal 2024 (the year ended December 31, 2024), in $ millions?",
+      "answer": 49326,
+      "unit": "usd_millions",
+      "correct": true,
+      "audit_passed": true,
+      "sources": [
+        "GOOGL-FY2024-chunk-606"
+      ],
+      "iterations": 2,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "GOOGL"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2024
+          ]
+        }
+      },
+      "latency_sec": 197.1,
+      "report": "Alphabet's research and development expense in fiscal 2024 was $49,326 million. This figure is calculated from the costs and expenses section of the Alphabet (GOOGL) 10-K for fiscal 2024 [Source: GOOGL-FY2024-chunk-606]."
+    },
+    {
+      "id": "HD-2023-revenue",
+      "type": "lookup",
+      "question": "What was Home Depot's total revenue in fiscal 2023 (the year ended January 28, 2024), in $ millions?",
+      "answer": 152669,
+      "unit": "usd_millions",
+      "correct": true,
+      "audit_passed": true,
+      "sources": [
+        "HD-FY2024-chunk-399",
+        "HD-FY2024-chunk-665"
+      ],
+      "iterations": 3,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "HD"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2024
+          ]
+        }
+      },
+      "latency_sec": 148.6,
+      "report": "Home Depot's total revenue in fiscal 2024 was $159.5 billion, as reported in the executive summary of their 10-K report for fiscal 2024 [Source: HD-FY2024-chunk-399]. However, the revenue for fiscal 2023 was not explicitly stated in the provided sources. To obtain the revenue for fiscal 2023, we can use the calculated metrics provided, which states that the revenue for fiscal 2023 was $152,669 million [Source: HD-FY2024-chunk-665]."
+    },
+    {
+      "id": "ORCL-2025-cfo",
+      "type": "lookup",
+      "question": "What was Oracle's net cash provided by operating activities in fiscal 2025 (the year ended May 31, 2025), in $ millions?",
+      "answer": 20821,
+      "unit": "usd_millions",
+      "correct": true,
+      "audit_passed": true,
+      "sources": [
+        "ORCL-FY2025-chunk-651",
+        "ORCL-FY2025-chunk-654"
+      ],
+      "iterations": 1,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "ORCL"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2025
+          ]
+        }
+      },
+      "latency_sec": 58.6,
+      "report": "Oracle's net cash provided by operating activities for the fiscal year ended May 31, 2025, was $20,821 million. This represents a 12% increase from the previous fiscal year, which was $18,673 million [Source: ORCL-FY2025-chunk-651]. The increase is primarily due to higher net income adjusted for certain non-cash charges, partially offset by certain cash unfavorable working capital changes, net [Source: ORCL-FY2025-chunk-654]."
+    },
+    {
+      "id": "MSFT-2025-equity",
+      "type": "lookup",
+      "question": "What was Microsoft's total shareholders' equity as of June 30, 2025, the end of fiscal 2025, in $ millions?",
+      "answer": 343479,
+      "unit": "usd_millions",
+      "correct": true,
+      "audit_passed": true,
+      "sources": [
+        "MSFT-FY2025-chunk-577",
+        "MSFT-FY2025-chunk-395"
+      ],
+      "iterations": 1,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "MSFT"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2025
+          ]
+        }
+      },
+      "latency_sec": 114.2,
+      "report": "Microsoft's total shareholders' equity as of June 30, 2025, was $343,479 million, after share repurchases but before any potential future share issuances. The total shareholders' equity without the impact of share repurchases from 2023 to 2025 was $168,462 million. [Source: MSFT-FY2025-chunk-577, MSFT-FY2025-chunk-395, and calculated metrics]"
+    },
+    {
+      "id": "AMZN-2025-operating_income",
+      "type": "lookup",
+      "question": "What was Amazon's operating income in fiscal 2025 (the year ended December 31, 2025), in $ millions?",
+      "answer": 79975,
+      "unit": "usd_millions",
+      "correct": false,
+      "audit_passed": true,
+      "sources": [
+        "AMZN-FY2025-chunk-348",
+        "AMZN-FY2025-chunk-347"
+      ],
+      "iterations": 1,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "AMZN"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2025
+          ]
+        }
+      },
+      "latency_sec": 67.5,
+      "report": "Amazon's operating income for fiscal 2025, excluding charges related to a lawsuit settlement with the Federal Trade Commission (FTC) and estimated severance costs, was $74,775 million [Source: AMZN-FY2025-chunk-348, AMZN-FY2025-chunk-347, and calculated metrics]."
+    },
+    {
+      "id": "KO-2024-total_assets",
+      "type": "lookup",
+      "question": "What was Coca-Cola's total assets as of December 31, 2024, the end of fiscal 2024, in $ millions?",
+      "answer": 100549,
+      "unit": "usd_millions",
+      "correct": false,
+      "audit_passed": true,
+      "sources": [
+        "KO-FY2024-chunk-940",
+        "KO-FY2024-chunk-1176",
+        "KO-FY2024-chunk-805"
+      ],
+      "iterations": 2,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "KO"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2024
+          ]
+        }
+      },
+      "latency_sec": 114.7,
+      "report": "Coca-Cola's total assets as of December 31, 2024, were approximately $13,107 million. This figure includes prepaid expenses ($25 million from [Source: KO-FY2024-chunk-940]), net receivables ($1,357 million from [Source: KO-FY2024-chunk-1176]), dividends received ($968 million from [Source: KO-FY2024-chunk-1176]), consolidated reinvested earnings ($8,594 million from [Source: KO-FY2024-chunk-1176]), purchases of property, plant and equipment ($2,064 million from [Source: KO-FY2024-chunk-805]), and capital expenditures ($2,064 million + $123 million from [Source: KO-FY2024-chunk-805 and 845]). The pension plan assets and obligations were not included in the calculation of total assets."
+    },
+    {
+      "id": "LLY-2025-rd",
+      "type": "lookup",
+      "question": "What was Eli Lilly's research and development expense in fiscal 2025 (the year ended December 31, 2025), in $ millions?",
+      "answer": 13337,
+      "unit": "usd_millions",
+      "correct": true,
+      "audit_passed": true,
+      "sources": [
+        "LLY-FY2025-chunk-666"
+      ],
+      "iterations": 2,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "LLY"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2025
+          ]
+        }
+      },
+      "latency_sec": 142.6,
+      "report": "Eli Lilly's research and development expense in fiscal 2025 was $13,337 million [Source: LLY-FY2025-chunk-666]."
+    },
+    {
+      "id": "GOOGL-2025-eps_diluted",
+      "type": "lookup",
+      "question": "What was Alphabet's diluted earnings per share in fiscal 2025 (the year ended December 31, 2025), in dollars?",
+      "answer": 10.81,
+      "unit": "usd",
+      "correct": false,
+      "audit_passed": true,
+      "sources": [
+        "GOOGL-FY2025-chunk-563",
+        "GOOGL-FY2025-chunk-892",
+        "GOOGL-FY2025-chunk-407",
+        "GOOGL-FY2025-chunk-882"
+      ],
+      "iterations": 1,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "GOOGL"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2025
+          ]
+        }
+      },
+      "latency_sec": 70.4,
+      "report": "The diluted earnings per share (EPS) for Alphabet (GOOGL) in fiscal 2025 was $5,955.40, as calculated from the provided financial statements [Source: GOOGL-FY2025-chunk-563, GOOGL-FY2025-chunk-892, GOOGL-FY2025-chunk-407, GOOGL-FY2025-chunk-882]."
+    },
+    {
+      "id": "INTC-2025-cfo",
+      "type": "lookup",
+      "question": "What was Intel's net cash provided by operating activities in fiscal 2025 (the year ended December 27, 2025), in $ millions?",
+      "answer": 9697,
+      "unit": "usd_millions",
+      "correct": true,
+      "audit_passed": true,
+      "sources": [
+        "INTC-FY2025-chunk-411",
+        "INTC-FY2025-chunk-413"
+      ],
+      "iterations": 1,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "INTC"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2025
+          ]
+        }
+      },
+      "latency_sec": 57.1,
+      "report": "Intel's net cash provided by operating activities for fiscal 2025 was $9,697 million, as reported in the 'Cash Flows' section of the Intel (INTC) 10-K for fiscal 2025 [Source: INTC-FY2025-chunk-411]. This figure was calculated after adjusting for net capital expenditures, payments on finance leases, and adjusted free cash flow, as shown in the Calculated Metrics section [Source: INTC-FY2025-chunk-413]."
+    },
+    {
+      "id": "AMZN-2025-eps_diluted",
+      "type": "lookup",
+      "question": "What was Amazon's diluted earnings per share in fiscal 2025 (the year ended December 31, 2025), in dollars?",
+      "answer": 7.17,
+      "unit": "usd",
+      "correct": false,
+      "audit_passed": true,
+      "sources": [
+        "AMZN-FY2025-chunk-591"
+      ],
+      "iterations": 1,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "AMZN"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2025
+          ]
+        }
+      },
+      "latency_sec": 47.0,
+      "report": "Amazon's diluted earnings per share (EPS) for the fiscal year 2025 was $0.000673, as calculated from the provided financial statements [Source: AMZN-FY2025-chunk-591]."
+    },
+    {
+      "id": "MCD-2024-operating_income",
+      "type": "lookup",
+      "question": "What was McDonald's's operating income in fiscal 2024 (the year ended December 31, 2024), in $ millions?",
+      "answer": 11712,
+      "unit": "usd_millions",
+      "correct": true,
+      "audit_passed": true,
+      "sources": [
+        "MCD-FY2024-chunk-500",
+        "MCD-FY2024-chunk-111",
+        "MCD-FY2024-chunk-219"
+      ],
+      "iterations": 1,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "MCD"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2024
+          ]
+        }
+      },
+      "latency_sec": 70.5,
+      "report": "The operating income for McDonald's in fiscal 2024 was $11,712 million [Source: MCD-FY2024-chunk-500]. The operating margin decreased from 46% in 2023 to 45% in 2024, as the operating income as a percent of total revenues [Source: MCD-FY2024-chunk-111]. Cash provided by operations was $9,400 million in 2024, a 2% decrease from the prior year [Source: MCD-FY2024-chunk-219]."
+    },
+    {
+      "id": "KO-2023-net_income",
+      "type": "lookup",
+      "question": "What was Coca-Cola's net income in fiscal 2023 (the year ended December 31, 2023), in $ millions?",
+      "answer": 10714,
+      "unit": "usd_millions",
+      "correct": false,
+      "audit_passed": true,
+      "sources": [
+        "KO-FY2023-chunk-678",
+        "KO-FY2023-chunk-726",
+        "KO-FY2023-chunk-782",
+        "KO-FY2023-chunk-1022",
+        "KO-FY2023-chunk-728"
+      ],
+      "iterations": 1,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "KO"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2023
+          ]
+        }
+      },
+      "latency_sec": 69.0,
+      "report": "Based on the provided financial statements from Coca-Cola's 10-K report for fiscal 2023, the calculated net income is $53,028 million. This figure includes the impact of net operating revenues, operating income for North America, Global Ventures' operating income, net cash provided by operating activities, and other income. [Source: KO-FY2023-chunk-678, KO-FY2023-chunk-726, KO-FY2023-chunk-782, KO-FY2023-chunk-1022, KO-FY2023-chunk-728, generated_code]"
+    },
+    {
+      "id": "GOOGL-2024-cfo",
+      "type": "lookup",
+      "question": "What was Alphabet's net cash provided by operating activities in fiscal 2024 (the year ended December 31, 2024), in $ millions?",
+      "answer": 125299,
+      "unit": "usd_millions",
+      "correct": true,
+      "audit_passed": true,
+      "sources": [
+        "GOOGL-FY2024-chunk-488"
+      ],
+      "iterations": 1,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "GOOGL"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2024
+          ]
+        }
+      },
+      "latency_sec": 82.8,
+      "report": "Alphabet's net cash provided by operating activities for fiscal 2024 was $125,299 million [Source: GOOGL-FY2024-chunk-488]."
+    },
+    {
+      "id": "CAT-2023-eps_diluted",
+      "type": "lookup",
+      "question": "What was Caterpillar's diluted earnings per share in fiscal 2023 (the year ended December 31, 2023), in dollars?",
+      "answer": 20.12,
+      "unit": "usd",
+      "correct": true,
+      "audit_passed": false,
+      "sources": [
+        "CAT-FY2023-chunk-1067"
+      ],
+      "iterations": 3,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "CAT"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2023
+          ]
+        }
+      },
+      "latency_sec": 165.4,
+      "report": "Caterpillar's diluted earnings per share in fiscal 2023 was $104.39, calculated as the product of profit per share ($20.12) and the average common shares outstanding for fully diluted computation (513.6) [Source: CAT-FY2023-chunk-1067]"
+    },
+    {
+      "id": "NVDA-2026-net_income",
+      "type": "lookup",
+      "question": "What was NVIDIA's net income in fiscal 2026 (the year ended January 25, 2026), in $ millions?",
+      "answer": 120067,
+      "unit": "usd_millions",
+      "correct": true,
+      "audit_passed": false,
+      "sources": [],
+      "iterations": 3,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "NVDA"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2026
+          ]
+        }
+      },
+      "latency_sec": 205.3,
+      "report": "NVIDIA's net income for fiscal 2026 was $120,067 million, an increase of 65% from the previous year. This information can be found in the NVIDIA (NVDA) 10-K for fiscal 2026, specifically in chunk 688."
+    },
+    {
+      "id": "ORCL-2026-total_assets",
+      "type": "lookup",
+      "question": "What was Oracle's total assets as of May 31, 2026, the end of fiscal 2026, in $ millions?",
+      "answer": 261759,
+      "unit": "usd_millions",
+      "correct": false,
+      "audit_passed": false,
+      "sources": [],
+      "iterations": 3,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "ORCL"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2026
+          ]
+        }
+      },
+      "latency_sec": 161.2,
+      "report": "Oracle's total assets as of May 31, 2026, the end of fiscal 2026, in $ millions was 68,191 million. This total includes current assets of 46,567 million (Source: ORCL-FY2026-chunk-758), intangible assets, net of 3,229 million (Source: ORCL-FY2026-chunk-962), changes in the carrying amounts of goodwill for fiscal 2026 of 2,700 million (Source: ORCL-FY2026-chunk-1134), and marketable securities for fiscal 2025 of 417 million (Source: ORCL-FY2026-chunk-758)."
+    },
+    {
+      "id": "GOOGL-2024-eps_diluted",
+      "type": "lookup",
+      "question": "What was Alphabet's diluted earnings per share in fiscal 2024 (the year ended December 31, 2024), in dollars?",
+      "answer": 8.04,
+      "unit": "usd",
+      "correct": true,
+      "audit_passed": false,
+      "sources": [],
+      "iterations": 3,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "GOOGL"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2024
+          ]
+        }
+      },
+      "latency_sec": 190.1,
+      "report": "Alphabet's diluted earnings per share (EPS) for fiscal 2024 was approximately $8.04 + $7,039 (due to conversion of Class B to Class A shares) - $520 (due to reallocation of undistributed earnings) divided by the total number of shares for diluted EPS calculation. The total number of shares for diluted EPS calculation includes the number of shares used in the basic computation (12,319) plus the number of additional shares that could be issued due to stock-based compensation. The total number of shares for diluted EPS calculation is approximately 12,319 + (22,800,000,000 / 100,118) * 633,000,000."
+    },
+    {
+      "id": "CAT-2025-total_assets",
+      "type": "lookup",
+      "question": "What was Caterpillar's total assets as of December 31, 2025, the end of fiscal 2025, in $ millions?",
+      "answer": 98585,
+      "unit": "usd_millions",
+      "correct": false,
+      "audit_passed": true,
+      "sources": [
+        "CAT-FY2025-chunk-691",
+        "CAT-FY2025-chunk-1219",
+        "CAT-FY2025-chunk-449"
+      ],
+      "iterations": 2,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "CAT"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2025
+          ]
+        }
+      },
+      "latency_sec": 139.3,
+      "report": "Caterpillar's total assets as of December 31, 2025, the end of fiscal 2025, was $118,393 million. This figure is calculated by adding the total current assets ($52,485 million from [Source: CAT-FY2025-chunk-691]), assets from reportable segments ($64,392 million from [Source: CAT-FY2025-chunk-1219]), and assets from All Other Segment ($1,516 million from [Source: CAT-FY2025-chunk-449])."
+    },
+    {
+      "id": "ABBV-2023-total_assets",
+      "type": "lookup",
+      "question": "What was AbbVie's total assets as of December 31, 2023, the end of fiscal 2023, in $ millions?",
+      "answer": 134711,
+      "unit": "usd_millions",
+      "correct": false,
+      "audit_passed": false,
+      "sources": [],
+      "iterations": 3,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "ABBV"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2023
+          ]
+        }
+      },
+      "latency_sec": 147.4,
+      "report": "AbbVie's total assets as of December 31, 2023, the end of fiscal 2023, was $14,400,891,028. This figure includes all assets excluding goodwill, intangibles, valuation allowances, and cash."
+    },
+    {
+      "id": "GOOGL-2023-operating_income",
+      "type": "lookup",
+      "question": "What was Alphabet's operating income in fiscal 2023 (the year ended December 31, 2023), in $ millions?",
+      "answer": 84293,
+      "unit": "usd_millions",
+      "correct": true,
+      "audit_passed": true,
+      "sources": [
+        "GOOGL-FY2023-chunk-615",
+        "GOOGL-FY2023-chunk-469"
+      ],
+      "iterations": 1,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "GOOGL"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2023
+          ]
+        }
+      },
+      "latency_sec": 83.8,
+      "report": "Alphabet's operating income for fiscal 2023 was $75,107 million [Source: GOOGL-FY2023-chunk-615]. This figure includes Alphabet-level activities, which resulted in a loss of $9,186 million [Source: GOOGL-FY2023-chunk-469]. To calculate the operating income excluding Alphabet-level activities, the total operating income was adjusted by the losses from Alphabet-level activities, depreciation, stock-based compensation, deferred income taxes, and gain/loss on debt and equity securities, and then subtracted from the net income. The operating income excluding Alphabet-level activities was $84,293 million [Source: calculated metrics]."
+    },
+    {
+      "id": "ORCL-2026-rd",
+      "type": "lookup",
+      "question": "What was Oracle's research and development expense in fiscal 2026 (the year ended May 31, 2026), in $ millions?",
+      "answer": 10272,
+      "unit": "usd_millions",
+      "correct": true,
+      "audit_passed": true,
+      "sources": [
+        "ORCL-FY2026-chunk-767"
+      ],
+      "iterations": 1,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "ORCL"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2026
+          ]
+        }
+      },
+      "latency_sec": 43.4,
+      "report": "Oracle's research and development expense in fiscal 2026 was $10,272 million [Source: ORCL-FY2026-chunk-767]."
+    },
+    {
+      "id": "MSFT-2026-eps_diluted",
+      "type": "lookup",
+      "question": "What was Microsoft's diluted earnings per share in fiscal 2026 (the year ended June 30, 2026), in dollars?",
+      "answer": 17.95,
+      "unit": "usd",
+      "correct": false,
+      "audit_passed": true,
+      "sources": [
+        "MSFT-FY2026-chunk-488"
+      ],
+      "iterations": 1,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "MSFT"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2026
+          ]
+        }
+      },
+      "latency_sec": 70.5,
+      "report": "Microsoft's diluted earnings per share in fiscal 2026 was $266,842.68, calculated using the data from fiscal years 2024 and 2026 [Source: MSFT-FY2026-chunk-488]."
+    },
+    {
+      "id": "JNJ-2023-rd_intensity",
+      "type": "computed",
+      "question": "What percentage of total revenue did Johnson & Johnson spend on research and development in fiscal 2023 (fiscal 2023 ended December 31, 2023)? Answer in percent.",
+      "answer": 17.71,
+      "unit": "percent",
+      "correct": true,
+      "audit_passed": true,
+      "sources": [
+        "JNJ-FY2023-chunk-381"
+      ],
+      "iterations": 3,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "JNJ"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2023
+          ]
+        }
+      },
+      "latency_sec": 90.6,
+      "report": "Johnson & Johnson (JNJ) spent 17.7% of their total revenue on research and development in fiscal 2023. This information can be found in the 'Research and Development Expense' section of the JNJ 10-K for fiscal 2023 [Source: JNJ-FY2023-chunk-381]."
+    },
+    {
+      "id": "HD-2025-net_margin",
+      "type": "computed",
+      "question": "What was Home Depot's net margin (net income / total revenue) in fiscal 2025 (fiscal 2025 ended February 1, 2026)? Answer in percent.",
+      "answer": 8.6,
+      "unit": "percent",
+      "correct": false,
+      "audit_passed": false,
+      "sources": [
+        "HD-FY2025-chunk-424",
+        "HD-FY2025-chunk-451"
+      ],
+      "iterations": 3,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "HD"
+          ]
+        }
+      },
+      "latency_sec": 151.6,
+      "report": "Home Depot's net margin for fiscal 2025 was 33.32%. This calculation is based on the gross profit of $54.9 billion (33.3% of net sales) and net earnings of $14.16 billion, with operating expenses, interest and other, net, and provision for income taxes deducted. [Source: HD-FY2025-chunk-424, HD-FY2025-chunk-451]"
+    },
+    {
+      "id": "AMZN-2024-current_ratio",
+      "type": "computed",
+      "question": "What was Amazon's current ratio (total current assets / total current liabilities) at the end of fiscal 2024 (fiscal 2024 ended December 31, 2024)?",
+      "answer": 1.064,
+      "unit": "ratio",
+      "correct": true,
+      "audit_passed": true,
+      "sources": [
+        "AMZN-FY2024-chunk-648"
+      ],
+      "iterations": 1,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "AMZN"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2024
+          ]
+        }
+      },
+      "latency_sec": 73.7,
+      "report": "Amazon's current ratio at the end of fiscal 2024 was approximately 1.06, indicating that the company had approximately $1.06 in current assets to cover each $1.00 of current liabilities. [Source: AMZN-FY2024-chunk-648]"
+    },
+    {
+      "id": "CRM-2024-gross_margin",
+      "type": "computed",
+      "question": "What was Salesforce's gross margin (gross profit / total revenue) in fiscal 2024 (fiscal 2024 ended January 31, 2024)? Answer in percent.",
+      "answer": 75.5,
+      "unit": "percent",
+      "correct": true,
+      "audit_passed": true,
+      "sources": [
+        "CRM-FY2024-chunk-646",
+        "CRM-FY2024-chunk-656"
+      ],
+      "iterations": 2,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "CRM"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2024
+          ]
+        }
+      },
+      "latency_sec": 103.5,
+      "report": "Salesforce's gross margin for fiscal 2024 was 75.49%, as calculated from the provided financial statements [Source: CRM-FY2024-chunk-646, CRM-FY2024-chunk-656]."
+    },
+    {
+      "id": "AMD-2025-revenue_growth",
+      "type": "computed",
+      "question": "By what percentage did AMD's total revenue change from fiscal 2024 to fiscal 2025 (fiscal 2025 ended December 27, 2025)? Answer in percent.",
+      "answer": 34.34,
+      "unit": "percent",
+      "correct": false,
+      "audit_passed": false,
+      "sources": [],
+      "iterations": 3,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "AMD"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2025
+          ]
+        }
+      },
+      "latency_sec": 114.0,
+      "report": "AMD's total revenue increased by 52.08% from fiscal 2024 to fiscal 2025. This information is derived from the AMD 10-K for fiscal 2025."
+    },
+    {
+      "id": "AMZN-2025-current_ratio",
+      "type": "computed",
+      "question": "What was Amazon's current ratio (total current assets / total current liabilities) at the end of fiscal 2025 (fiscal 2025 ended December 31, 2025)?",
+      "answer": 1.051,
+      "unit": "ratio",
+      "correct": true,
+      "audit_passed": true,
+      "sources": [
+        "AMZN-FY2025-chunk-435"
+      ],
+      "iterations": 1,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "AMZN"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2025
+          ]
+        }
+      },
+      "latency_sec": 75.2,
+      "report": "Amazon's current ratio at the end of fiscal 2025 was 1.0508, indicating that the company had $1.05 in current assets to cover each $1.00 of current liabilities. This calculation is based on the total current assets of $229,083 ([Source: AMZN-FY2025-chunk-435]) and the total current liabilities of $218,005 ([Source: AMZN-FY2025-chunk-435])."
+    },
+    {
+      "id": "TXN-2025-gross_margin",
+      "type": "computed",
+      "question": "What was Texas Instruments's gross margin (gross profit / total revenue) in fiscal 2025 (fiscal 2025 ended December 31, 2025)? Answer in percent.",
+      "answer": 57.02,
+      "unit": "percent",
+      "correct": true,
+      "audit_passed": true,
+      "sources": [
+        "TXN-FY2025-chunk-241",
+        "TXN-FY2025-chunk-288"
+      ],
+      "iterations": 1,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "TXN"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2025
+          ]
+        }
+      },
+      "latency_sec": 50.1,
+      "report": "Texas Instruments's gross margin for fiscal 2025 was 57.02%, as calculated from the provided financial statements [Source: TXN-FY2025-chunk-241 and TXN-FY2025-chunk-288]."
+    },
+    {
+      "id": "AMZN-2023-revenue_growth",
+      "type": "computed",
+      "question": "By what percentage did Amazon's total revenue change from fiscal 2022 to fiscal 2023 (fiscal 2023 ended December 31, 2023)? Answer in percent.",
+      "answer": 11.83,
+      "unit": "percent",
+      "correct": true,
+      "audit_passed": true,
+      "sources": [
+        "AMZN-FY2023-chunk-304",
+        "AMZN-FY2023-chunk-571"
+      ],
+      "iterations": 2,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "AMZN"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2023
+          ]
+        }
+      },
+      "latency_sec": 84.0,
+      "report": "Amazon's total revenue for fiscal 2023 increased by 11.83% compared to fiscal 2022. This is calculated from the consolidated net sales figures, which were $513,983 for fiscal 2022 and $574,785 for fiscal 2023 [Source: AMZN-FY2023-chunk-304 and AMZN-FY2023-chunk-571]"
+    },
+    {
+      "id": "JNJ-2024-current_ratio",
+      "type": "computed",
+      "question": "What was Johnson & Johnson's current ratio (total current assets / total current liabilities) at the end of fiscal 2024 (fiscal 2024 ended December 29, 2024)?",
+      "answer": 1.111,
+      "unit": "ratio",
+      "correct": false,
+      "audit_passed": false,
+      "sources": [
+        "JNJ-FY2024-chunk-493",
+        "JNJ-FY2024-chunk-748",
+        "JNJ-FY2024-chunk-896",
+        "JNJ-FY2024-chunk-967"
+      ],
+      "iterations": 3,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "JNJ"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2024
+          ]
+        }
+      },
+      "latency_sec": 182.7,
+      "report": "Johnson & Johnson's (JNJ) current ratio at the end of fiscal 2024 was approximately 1.2045, calculated as follows: Current assets = $180,104 - $6,046 - $11,414 [Source: JNJ-FY2024-chunk-493, JNJ-FY2024-chunk-748, JNJ-FY2024-chunk-896]; Current Liabilities = $5,983 + $10,311 + $8,549 + $136 [Source: JNJ-FY2024-chunk-493, JNJ-FY2024-chunk-748]; Contingent liabilities (10% of the reserve) = $13,500,000,000 * 0.1 [Source: JNJ-FY2024-chunk-967]; Current Ratio = Current Assets / Current Liabilities"
+    },
+    {
+      "id": "CRM-2025-net_margin",
+      "type": "computed",
+      "question": "What was Salesforce's net margin (net income / total revenue) in fiscal 2025 (fiscal 2025 ended January 31, 2025)? Answer in percent.",
+      "answer": 16.35,
+      "unit": "percent",
+      "correct": false,
+      "audit_passed": true,
+      "sources": [
+        "CRM-FY2025-chunk-641",
+        "CRM-FY2025-chunk-933"
+      ],
+      "iterations": 1,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "CRM"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2025
+          ]
+        }
+      },
+      "latency_sec": 75.1,
+      "report": "The net margin for Salesforce in fiscal 2025 was approximately 39.75% [Source: CRM-FY2025-chunk-641]. This calculation takes into account the 50% of total revenue recognized in fiscal 2025 that was from the unearned revenue balance as of January 31, 2024 [Source: CRM-FY2025-chunk-933], and adjusts the revenue accordingly [Source: Calculated Metrics]."
+    },
+    {
+      "id": "JNJ-2023-current_ratio",
+      "type": "computed",
+      "question": "What was Johnson & Johnson's current ratio (total current assets / total current liabilities) at the end of fiscal 2023 (fiscal 2023 ended December 31, 2023)?",
+      "answer": 1.156,
+      "unit": "ratio",
+      "correct": false,
+      "audit_passed": false,
+      "sources": [],
+      "iterations": 3,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "JNJ"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2023
+          ]
+        }
+      },
+      "latency_sec": 100.0,
+      "report": "Johnson & Johnson's (JNJ) current ratio for fiscal 2023 was 8.28 (Source: JNJ-FY2023-chunk-764). This ratio was calculated by dividing the total current assets ($167,558, Source: JNJ-FY2023-chunk-517) by the sum of current liabilities ($20,235, calculated from the sum of loans, accounts payable, accrued liabilities, accrued rebates, accrued compensation, and accrued taxes, Source: JNJ-FY2023-chunk-517)."
+    },
+    {
+      "id": "WMT-2025-current_ratio",
+      "type": "computed",
+      "question": "What was Walmart's current ratio (total current assets / total current liabilities) at the end of fiscal 2025 (fiscal 2025 ended January 31, 2025)?",
+      "answer": 0.823,
+      "unit": "ratio",
+      "correct": false,
+      "audit_passed": true,
+      "sources": [
+        "WMT-FY2025-chunk-990"
+      ],
+      "iterations": 1,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "WMT"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2025
+          ]
+        }
+      },
+      "latency_sec": 81.3,
+      "report": "The current ratio for Walmart at the end of fiscal 2025 was 3.44, indicating that for every dollar of current liabilities, the company had $3.44 in current assets [Source: WMT-FY2025-chunk-990]."
+    },
+    {
+      "id": "LLY-2025-net_margin",
+      "type": "computed",
+      "question": "What was Eli Lilly's net margin (net income / total revenue) in fiscal 2025 (fiscal 2025 ended December 31, 2025)? Answer in percent.",
+      "answer": 31.67,
+      "unit": "percent",
+      "correct": false,
+      "audit_passed": true,
+      "sources": [
+        "LLY-FY2025-chunk-666",
+        "LLY-FY2025-chunk-719"
+      ],
+      "iterations": 1,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "LLY"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2025
+          ]
+        }
+      },
+      "latency_sec": 75.0,
+      "report": "Eli Lilly's net margin for fiscal 2025 was 33.29%, calculated as net income (54,127 - 11,052 - 13,337 - 11,094 - 2,910 - 5,091) divided by total revenue (65,179) [Source: LLY-FY2025-chunk-666, LLY-FY2025-chunk-719]."
+    },
+    {
+      "id": "NVDA-2024-current_ratio",
+      "type": "computed",
+      "question": "What was NVIDIA's current ratio (total current assets / total current liabilities) at the end of fiscal 2024 (fiscal 2024 ended January 28, 2024)?",
+      "answer": 4.171,
+      "unit": "ratio",
+      "correct": false,
+      "audit_passed": true,
+      "sources": [
+        "NVDA-FY2024-chunk-683",
+        "NVDA-FY2024-chunk-679",
+        "NVDA-FY2024-chunk-681",
+        "NVDA-FY2024-chunk-680"
+      ],
+      "iterations": 1,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "NVDA"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2024
+          ]
+        }
+      },
+      "latency_sec": 68.0,
+      "report": "NVIDIA's current ratio at the end of fiscal 2024 was 2.98 to 1. This means that for every dollar of current liabilities, NVIDIA had $2.98 in current assets. [Source: NVDA-FY2024-chunk-683, NVDA-FY2024-chunk-679, NVDA-FY2024-chunk-681, NVDA-FY2024-chunk-680]"
+    },
+    {
+      "id": "GOOGL-2024-rd_intensity",
+      "type": "computed",
+      "question": "What percentage of total revenue did Alphabet spend on research and development in fiscal 2024 (fiscal 2024 ended December 31, 2024)? Answer in percent.",
+      "answer": 14.09,
+      "unit": "percent",
+      "correct": true,
+      "audit_passed": true,
+      "sources": [
+        "GOOGL-FY2024-chunk-468"
+      ],
+      "iterations": 2,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "GOOGL"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2024
+          ]
+        }
+      },
+      "latency_sec": 67.5,
+      "report": "In fiscal 2024, Alphabet spent 14.09% of its total revenue on research and development. [Source: GOOGL-FY2024-chunk-468]"
+    },
+    {
+      "id": "JNJ-2025-rd_intensity",
+      "type": "computed",
+      "question": "What percentage of total revenue did Johnson & Johnson spend on research and development in fiscal 2025 (fiscal 2025 ended December 28, 2025)? Answer in percent.",
+      "answer": 15.57,
+      "unit": "percent",
+      "correct": true,
+      "audit_passed": true,
+      "sources": [
+        "JNJ-FY2025-chunk-368"
+      ],
+      "iterations": 2,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "JNJ"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2025
+          ]
+        }
+      },
+      "latency_sec": 66.9,
+      "report": "Johnson & Johnson (JNJ) spent 14.66% of their total revenue on research and development in fiscal 2025. This figure is calculated from the total research and development expense of $14,665 million, which is 15.6% of their total sales as stated in [Source: JNJ-FY2025-chunk-368]."
+    },
+    {
+      "id": "MRK-2025-rd_intensity",
+      "type": "computed",
+      "question": "What percentage of total revenue did Merck spend on research and development in fiscal 2025 (fiscal 2025 ended December 31, 2025)? Answer in percent.",
+      "answer": 24.29,
+      "unit": "percent",
+      "correct": false,
+      "audit_passed": true,
+      "sources": [
+        "MRK-FY2025-chunk-672",
+        "MRK-FY2025-chunk-744",
+        "MRK-FY2025-chunk-653"
+      ],
+      "iterations": 1,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "MRK"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2025
+          ]
+        }
+      },
+      "latency_sec": 48.6,
+      "report": "The percentage of total revenue Merck spent on research and development in fiscal 2025 was 3.59%, as calculated from the provided financial statements [Source: MRK-FY2025-chunk-672, MRK-FY2025-chunk-744, MRK-FY2025-chunk-653]."
+    },
+    {
+      "id": "NVDA-2025-operating_margin",
+      "type": "computed",
+      "question": "What was NVIDIA's operating margin (operating income / total revenue) in fiscal 2025 (fiscal 2025 ended January 26, 2025)? Answer in percent.",
+      "answer": 62.42,
+      "unit": "percent",
+      "correct": false,
+      "audit_passed": true,
+      "sources": [
+        "NVDA-FY2025-chunk-585"
+      ],
+      "iterations": 1,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "NVDA"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2025
+          ]
+        }
+      },
+      "latency_sec": 49.2,
+      "report": "NVIDIA's operating margin for fiscal 2025 was 12.51% [Source: NVDA-FY2025-chunk-585]. This was calculated by subtracting total operating expenses from gross profit and dividing the result by total revenue for the same fiscal year."
+    },
+    {
+      "id": "INTC-2023-rd_intensity",
+      "type": "computed",
+      "question": "What percentage of total revenue did Intel spend on research and development in fiscal 2023 (fiscal 2023 ended December 30, 2023)? Answer in percent.",
+      "answer": 29.59,
+      "unit": "percent",
+      "correct": true,
+      "audit_passed": false,
+      "sources": [],
+      "iterations": 3,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "INTC"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2023
+          ]
+        }
+      },
+      "latency_sec": 71.4,
+      "report": "In fiscal 2023, Intel spent 29.59% of its total revenue on research and development. This information is derived from the calculations in the source context."
+    },
+    {
+      "id": "GOOGL-2024-net_income_growth",
+      "type": "computed",
+      "question": "By what percentage did Alphabet's net income change from fiscal 2023 to fiscal 2024 (fiscal 2024 ended December 31, 2024)? Answer in percent.",
+      "answer": 35.67,
+      "unit": "percent",
+      "correct": true,
+      "audit_passed": false,
+      "sources": [],
+      "iterations": 3,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "GOOGL"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2024
+          ]
+        }
+      },
+      "latency_sec": 117.6,
+      "report": "Alphabet's net income increased by 35.67% from fiscal 2023 to fiscal 2024. This information is derived from the calculated metrics."
+    },
+    {
+      "id": "TXN-2025-current_ratio",
+      "type": "computed",
+      "question": "What was Texas Instruments's current ratio (total current assets / total current liabilities) at the end of fiscal 2025 (fiscal 2025 ended December 31, 2025)?",
+      "answer": 4.353,
+      "unit": "ratio",
+      "correct": false,
+      "audit_passed": true,
+      "sources": [
+        "TXN-FY2025-chunk-249",
+        "TXN-FY2025-chunk-251",
+        "TXN-FY2025-chunk-252"
+      ],
+      "iterations": 1,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "TXN"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2025
+          ]
+        }
+      },
+      "latency_sec": 60.9,
+      "report": "The current ratio for Texas Instruments (TXN) at the end of fiscal 2025 was 2.60 (rounded), calculated as (3,225 + 1,656 + 1,963 + 465 + 2,372 + 1,967 + 4,804) / (3,159 + 500 + 756 + 829 + 67 + 1,007) [Source: TXN-FY2025-chunk-249, TXN-FY2025-chunk-251, TXN-FY2025-chunk-252]."
+    },
+    {
+      "id": "KO-2025-revenue_growth",
+      "type": "computed",
+      "question": "By what percentage did Coca-Cola's total revenue change from fiscal 2024 to fiscal 2025 (fiscal 2025 ended December 31, 2025)? Answer in percent.",
+      "answer": 1.87,
+      "unit": "percent",
+      "correct": true,
+      "audit_passed": true,
+      "sources": [
+        "KO-FY2025-chunk-701"
+      ],
+      "iterations": 2,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "KO"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2025
+          ]
+        }
+      },
+      "latency_sec": 74.0,
+      "report": "Coca-Cola's total revenue increased by 1.87% from fiscal 2024 to fiscal 2025, as reported in the Coca-Cola (KO) 10-K for fiscal 2025 [Source: KO-FY2025-chunk-701]."
+    },
+    {
+      "id": "MSFT-2025-net_margin",
+      "type": "computed",
+      "question": "What was Microsoft's net margin (net income / total revenue) in fiscal 2025 (fiscal 2025 ended June 30, 2025)? Answer in percent.",
+      "answer": 36.15,
+      "unit": "percent",
+      "correct": true,
+      "audit_passed": true,
+      "sources": [
+        "MSFT-FY2025-chunk-437",
+        "MSFT-FY2025-chunk-460",
+        "MSFT-FY2025-chunk-495"
+      ],
+      "iterations": 1,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "MSFT"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2025
+          ]
+        }
+      },
+      "latency_sec": 45.5,
+      "report": "Microsoft's net margin for fiscal 2025 was 36.15% [Source: MSFT-FY2025-chunk-437, MSFT-FY2025-chunk-460, MSFT-FY2025-chunk-495]"
+    },
+    {
+      "id": "JNJ-2024-net_income_growth",
+      "type": "computed",
+      "question": "By what percentage did Johnson & Johnson's net income change from fiscal 2023 to fiscal 2024 (fiscal 2024 ended December 29, 2024)? Answer in percent.",
+      "answer": -59.99,
+      "unit": "percent",
+      "correct": false,
+      "audit_passed": true,
+      "sources": [
+        "JNJ-FY2024-chunk-371",
+        "JNJ-FY2024-chunk-671"
+      ],
+      "iterations": 2,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "JNJ"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2024
+          ]
+        }
+      },
+      "latency_sec": 76.5,
+      "report": "Johnson & Johnson's (JNJ) net income changed by 95.56% from fiscal 2023 to fiscal 2024. This calculation is based on the provided financial data from JNJ's 10-K for fiscal 2024 [Source: JNJ-FY2024-chunk-371]. The significant increase in net income is primarily due to the changes in fair value reflected in net income, which resulted in impairments and gains on the disposal of investments [Source: JNJ-FY2024-chunk-671]."
+    },
+    {
+      "id": "MSFT-2025-gross_margin",
+      "type": "computed",
+      "question": "What was Microsoft's gross margin (gross profit / total revenue) in fiscal 2025 (fiscal 2025 ended June 30, 2025)? Answer in percent.",
+      "answer": 68.82,
+      "unit": "percent",
+      "correct": true,
+      "audit_passed": true,
+      "sources": [
+        "MSFT-FY2025-chunk-437"
+      ],
+      "iterations": 1,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "MSFT"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2025
+          ]
+        }
+      },
+      "latency_sec": 46.1,
+      "report": "Microsoft's gross margin for fiscal 2025 was 68.82% [Source: MSFT-FY2025-chunk-437 and calculated metrics]."
+    },
+    {
+      "id": "MRK-2023-net_margin",
+      "type": "computed",
+      "question": "What was Merck's net margin (net income / total revenue) in fiscal 2023 (fiscal 2023 ended December 31, 2023)? Answer in percent.",
+      "answer": 0.61,
+      "unit": "percent",
+      "correct": false,
+      "audit_passed": true,
+      "sources": [
+        "MRK-FY2023-chunk-1218",
+        "MRK-FY2023-chunk-899"
+      ],
+      "iterations": 1,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "MRK"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2023
+          ]
+        }
+      },
+      "latency_sec": 58.6,
+      "report": "Merck's net margin for fiscal 2023 was 100.0% [Source: MRK-FY2023-chunk-1218]. However, it's important to note that the net income figure used in the calculation was from the 'Net Income' section, which might not include all expenses. The revenue figure was assumed to be the same as the net income, as no revenue figure was provided in the source context [Source: MRK-FY2023-chunk-899]."
+    },
+    {
+      "id": "NVDA-2026-rd_intensity",
+      "type": "computed",
+      "question": "What percentage of total revenue did NVIDIA spend on research and development in fiscal 2026 (fiscal 2026 ended January 25, 2026)? Answer in percent.",
+      "answer": 8.57,
+      "unit": "percent",
+      "correct": false,
+      "audit_passed": false,
+      "sources": [],
+      "iterations": 3,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "NVDA"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2026
+          ]
+        }
+      },
+      "latency_sec": 124.0,
+      "report": "In fiscal 2026, NVIDIA spent 6.96% of their total revenue on research and development. This figure is calculated from the cost of revenue and research and development expenses provided in the 10-K report for fiscal 2026."
+    },
+    {
+      "id": "QCOM-2025-revenue_growth",
+      "type": "computed",
+      "question": "By what percentage did Qualcomm's total revenue change from fiscal 2024 to fiscal 2025 (fiscal 2025 ended September 28, 2025)? Answer in percent.",
+      "answer": 13.66,
+      "unit": "percent",
+      "correct": false,
+      "audit_passed": true,
+      "sources": [
+        "QCOM-FY2025-chunk-672"
+      ],
+      "iterations": 2,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "QCOM"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2025
+          ]
+        }
+      },
+      "latency_sec": 63.9,
+      "report": "Qualcomm's total revenue increased by 15.58% from fiscal 2024 to fiscal 2025, as calculated from the provided financial statements [Source: QCOM-FY2025-chunk-672]."
+    },
+    {
+      "id": "LLY-2025-net_income_growth",
+      "type": "computed",
+      "question": "By what percentage did Eli Lilly's net income change from fiscal 2024 to fiscal 2025 (fiscal 2025 ended December 31, 2025)? Answer in percent.",
+      "answer": 94.9,
+      "unit": "percent",
+      "correct": false,
+      "audit_passed": true,
+      "sources": [
+        "LLY-FY2025-chunk-583",
+        "LLY-FY2025-chunk-590"
+      ],
+      "iterations": 1,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "LLY"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2025
+          ]
+        }
+      },
+      "latency_sec": 67.0,
+      "report": "Eli Lilly's net income increased by 43.15% from fiscal 2024 to fiscal 2025, as reported in the Eli Lilly (LLY) 10-K for fiscal 2025 [Source: LLY-FY2025-chunk-583]. The revenue also increased by 45% and the gross margin as a percent of revenue increased by 1.7 percentage points during the same period [Source: LLY-FY2025-chunk-583, LLY-FY2025-chunk-590]."
+    },
+    {
+      "id": "TXN-2024-rd_intensity",
+      "type": "computed",
+      "question": "What percentage of total revenue did Texas Instruments spend on research and development in fiscal 2024 (fiscal 2024 ended December 31, 2024)? Answer in percent.",
+      "answer": 12.52,
+      "unit": "percent",
+      "correct": true,
+      "audit_passed": true,
+      "sources": [
+        "TXN-FY2024-chunk-269"
+      ],
+      "iterations": 1,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "TXN"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2024
+          ]
+        }
+      },
+      "latency_sec": 50.8,
+      "report": "The percentage of total revenue Texas Instruments spent on research and development in fiscal 2024 was approximately 12.52% [Source: TXN-FY2024-chunk-269]."
+    }
+  ]
+}

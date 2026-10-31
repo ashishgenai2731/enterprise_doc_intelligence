@@ -5,6 +5,7 @@ from pydantic import BaseModel, Field
 from langchain_ollama import ChatOllama
 from src.agents.state import AgentState
 from src.agents.tools import get_retriever, call_mcp_python_repl
+from src.retrieval.query_filters import detect_filters
 
 MAX_CONTEXT_CHUNKS = 10
 
@@ -72,7 +73,9 @@ def rag_analyst_node(state: AgentState) -> Dict[str, Any]:
     # On a retry, search for the specific evidence the auditor said was missing,
     # instead of gluing the whole failed report onto the query
     search_query = f"{query} {retry_query}" if retry_query else query
-    new_chunks = get_retriever().retrieve(query=search_query, top_k=5)
+    # Filters come from the user's question: a retry query rarely repeats the company and year
+    filters = detect_filters(query)
+    new_chunks = get_retriever().retrieve(query=search_query, top_k=5, filters=filters)
 
     # Keep earlier evidence and add the new chunks, so a retry widens the context
     merged = {c["id"]: c for c in state.get("rag_context", [])}
@@ -81,6 +84,7 @@ def rag_analyst_node(state: AgentState) -> Dict[str, Any]:
 
     return {
         "rag_context": list(merged.values())[:MAX_CONTEXT_CHUNKS],
+        "search_filters": filters,
         "iteration_count": state.get("iteration_count", 0) + 1,
     }
 

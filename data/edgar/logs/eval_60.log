@@ -1,0 +1,140 @@
+start 2026-10-31 15:43:35
+TXN-2024-total_assets: WRONG   | audit pass | 157.5s
+TSLA-2025-total_assets: WRONG   | audit fail | 272.3s
+ABBV-2023-rd: WRONG   | audit pass | 95.3s
+GOOGL-2023-net_income: WRONG   | audit pass | 166.6s
+AMZN-2023-operating_income: correct | audit pass | 35.0s
+NKE-2025-cfo: WRONG   | audit pass | 69.1s
+META-2024-rd: correct | audit pass | 202.3s
+PFE-2025-revenue: correct | audit pass | 123.3s
+GOOGL-2024-rd: correct | audit pass | 197.1s
+HD-2023-revenue: correct | audit pass | 148.6s
+ORCL-2025-cfo: correct | audit pass | 58.6s
+MSFT-2025-equity: correct | audit pass | 114.2s
+AMZN-2025-operating_income: WRONG   | audit pass | 67.5s
+KO-2024-total_assets: WRONG   | audit pass | 114.7s
+LLY-2025-rd: correct | audit pass | 142.6s
+GOOGL-2025-eps_diluted: WRONG   | audit pass | 70.4s
+INTC-2025-cfo: correct | audit pass | 57.1s
+AMZN-2025-eps_diluted: WRONG   | audit pass | 47.0s
+MCD-2024-operating_income: correct | audit pass | 70.5s
+KO-2023-net_income: WRONG   | audit pass | 69.0s
+GOOGL-2024-cfo: correct | audit pass | 82.8s
+CAT-2023-eps_diluted: correct | audit fail | 165.4s
+NVDA-2026-net_income: correct | audit fail | 205.3s
+ORCL-2026-total_assets: WRONG   | audit fail | 161.2s
+GOOGL-2024-eps_diluted: correct | audit fail | 190.1s
+CAT-2025-total_assets: WRONG   | audit pass | 139.3s
+ABBV-2023-total_assets: WRONG   | audit fail | 147.4s
+GOOGL-2023-operating_income: correct | audit pass | 83.8s
+ORCL-2026-rd: correct | audit pass | 43.4s
+MSFT-2026-eps_diluted: WRONG   | audit pass | 70.5s
+JNJ-2023-rd_intensity: WRONG   | audit pass | 90.6s
+HD-2025-net_margin: WRONG   | audit fail | 151.6s
+AMZN-2024-current_ratio: correct | audit pass | 73.7s
+CRM-2024-gross_margin: correct | audit pass | 103.5s
+AMD-2025-revenue_growth: WRONG   | audit fail | 114.0s
+AMZN-2025-current_ratio: correct | audit pass | 75.2s
+TXN-2025-gross_margin: correct | audit pass | 50.1s
+AMZN-2023-revenue_growth: correct | audit pass | 84.0s
+JNJ-2024-current_ratio: WRONG   | audit fail | 182.7s
+CRM-2025-net_margin: WRONG   | audit pass | 75.1s
+JNJ-2023-current_ratio: WRONG   | audit fail | 100.0s
+WMT-2025-current_ratio: WRONG   | audit pass | 81.3s
+LLY-2025-net_margin: WRONG   | audit pass | 75.0s
+NVDA-2024-current_ratio: WRONG   | audit pass | 68.0s
+GOOGL-2024-rd_intensity: correct | audit pass | 67.5s
+JNJ-2025-rd_intensity: WRONG   | audit pass | 66.9s
+MRK-2025-rd_intensity: WRONG   | audit pass | 48.6s
+NVDA-2025-operating_margin: WRONG   | audit pass | 49.2s
+INTC-2023-rd_intensity: correct | audit fail | 71.4s
+GOOGL-2024-net_income_growth: correct | audit fail | 117.6s
+TXN-2025-current_ratio: WRONG   | audit pass | 60.9s
+KO-2025-revenue_growth: correct | audit pass | 74.0s
+MSFT-2025-net_margin: correct | audit pass | 45.5s
+JNJ-2024-net_income_growth: WRONG   | audit pass | 76.5s
+MSFT-2025-gross_margin: correct | audit pass | 46.1s
+MRK-2023-net_margin: WRONG   | audit pass | 58.6s
+NVDA-2026-rd_intensity: WRONG   | audit fail | 124.0s
+QCOM-2025-revenue_growth: WRONG   | audit pass | 63.9s
+LLY-2025-net_income_growth: WRONG   | audit pass | 67.0s
+TXN-2024-rd_intensity: correct | audit pass | 50.8s
+
+| Metric | Value |
+|---|---|
+| Accuracy (all 60) | **47%** |
+| Accuracy, direct lookups | 53% |
+| Accuracy, computed metrics | 40% |
+| Audit pass rate | 78% |
+| False-pass rate (wrong but passed, of passed) | 51% |
+| Wrong answers caught by audit | 8 of 32 |
+| Answers with valid citations | 85% |
+| Avg. graph iterations | 1.77 |
+| Avg. latency per question | 100s |
+
+| ID | Expected | Correct | Audit | Iter. |
+|---|---|---|---|---|
+| TXN-2024-total_assets | 35509 | ❌ | pass | 2 |
+| TSLA-2025-total_assets | 137806 | ❌ | fail | 3 |
+| ABBV-2023-rd | 7675 | ❌ | pass | 1 |
+| GOOGL-2023-net_income | 73795 | ❌ | pass | 2 |
+| AMZN-2023-operating_income | 36852 | ✅ | pass | 1 |
+| NKE-2025-cfo | 3698 | ❌ | pass | 2 |
+| META-2024-rd | 43873 | ✅ | pass | 2 |
+| PFE-2025-revenue | 62579 | ✅ | pass | 2 |
+| GOOGL-2024-rd | 49326 | ✅ | pass | 2 |
+| HD-2023-revenue | 152669 | ✅ | pass | 3 |
+| ORCL-2025-cfo | 20821 | ✅ | pass | 1 |
+| MSFT-2025-equity | 343479 | ✅ | pass | 1 |
+| AMZN-2025-operating_income | 79975 | ❌ | pass | 1 |
+| KO-2024-total_assets | 100549 | ❌ | pass | 2 |
+| LLY-2025-rd | 13337 | ✅ | pass | 2 |
+| GOOGL-2025-eps_diluted | 10.81 | ❌ | pass | 1 |
+| INTC-2025-cfo | 9697 | ✅ | pass | 1 |
+| AMZN-2025-eps_diluted | 7.17 | ❌ | pass | 1 |
+| MCD-2024-operating_income | 11712 | ✅ | pass | 1 |
+| KO-2023-net_income | 10714 | ❌ | pass | 1 |
+| GOOGL-2024-cfo | 125299 | ✅ | pass | 1 |
+| CAT-2023-eps_diluted | 20.12 | ✅ | fail | 3 |
+| NVDA-2026-net_income | 120067 | ✅ | fail | 3 |
+| ORCL-2026-total_assets | 261759 | ❌ | fail | 3 |
+| GOOGL-2024-eps_diluted | 8.04 | ✅ | fail | 3 |
+| CAT-2025-total_assets | 98585 | ❌ | pass | 2 |
+| ABBV-2023-total_assets | 134711 | ❌ | fail | 3 |
+| GOOGL-2023-operating_income | 84293 | ✅ | pass | 1 |
+| ORCL-2026-rd | 10272 | ✅ | pass | 1 |
+| MSFT-2026-eps_diluted | 17.95 | ❌ | pass | 1 |
+| JNJ-2023-rd_intensity | 0.57 | ❌ | pass | 3 |
+| HD-2025-net_margin | 8.6 | ❌ | fail | 3 |
+| AMZN-2024-current_ratio | 1.064 | ✅ | pass | 1 |
+| CRM-2024-gross_margin | 75.5 | ✅ | pass | 2 |
+| AMD-2025-revenue_growth | 34.34 | ❌ | fail | 3 |
+| AMZN-2025-current_ratio | 1.051 | ✅ | pass | 1 |
+| TXN-2025-gross_margin | 57.02 | ✅ | pass | 1 |
+| AMZN-2023-revenue_growth | 11.83 | ✅ | pass | 2 |
+| JNJ-2024-current_ratio | 1.111 | ❌ | fail | 3 |
+| CRM-2025-net_margin | 16.35 | ❌ | pass | 1 |
+| JNJ-2023-current_ratio | 1.156 | ❌ | fail | 3 |
+| WMT-2025-current_ratio | 0.823 | ❌ | pass | 1 |
+| LLY-2025-net_margin | 31.67 | ❌ | pass | 1 |
+| NVDA-2024-current_ratio | 4.171 | ❌ | pass | 1 |
+| GOOGL-2024-rd_intensity | 14.09 | ✅ | pass | 2 |
+| JNJ-2025-rd_intensity | 0.12 | ❌ | pass | 2 |
+| MRK-2025-rd_intensity | 24.29 | ❌ | pass | 1 |
+| NVDA-2025-operating_margin | 62.42 | ❌ | pass | 1 |
+| INTC-2023-rd_intensity | 29.59 | ✅ | fail | 3 |
+| GOOGL-2024-net_income_growth | 35.67 | ✅ | fail | 3 |
+| TXN-2025-current_ratio | 4.353 | ❌ | pass | 1 |
+| KO-2025-revenue_growth | 1.87 | ✅ | pass | 2 |
+| MSFT-2025-net_margin | 36.15 | ✅ | pass | 1 |
+| JNJ-2024-net_income_growth | -59.99 | ❌ | pass | 2 |
+| MSFT-2025-gross_margin | 68.82 | ✅ | pass | 1 |
+| MRK-2023-net_margin | 0.61 | ❌ | pass | 1 |
+| NVDA-2026-rd_intensity | 8.57 | ❌ | fail | 3 |
+| QCOM-2025-revenue_growth | 13.66 | ❌ | pass | 2 |
+| LLY-2025-net_income_growth | 94.9 | ❌ | pass | 1 |
+| TXN-2024-rd_intensity | 12.52 | ✅ | pass | 1 |
+real 5995.89
+user 77.64
+sys 68.92
+end 2026-10-31 17:23:31

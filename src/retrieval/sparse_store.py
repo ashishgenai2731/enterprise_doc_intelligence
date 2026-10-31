@@ -11,7 +11,7 @@ def tokenize(text: str) -> List[str]:
 
 
 def load_corpus(path: str) -> List[Dict[str, Any]]:
-    """Reads the local chunk corpus (one {'id', 'text'} JSON object per line)."""
+    """Reads the local chunk corpus (one {'id', 'text', 'metadata'} JSON object per line)."""
     corpus_file = Path(path)
     if not corpus_file.exists():
         return []
@@ -19,15 +19,24 @@ def load_corpus(path: str) -> List[Dict[str, Any]]:
         return [json.loads(line) for line in f if line.strip()]
 
 
-def append_to_corpus(path: str, chunks: List[Dict[str, Any]]):
-    """Appends chunks to the local corpus, skipping IDs that are already present."""
+def corpus_ids(path: str) -> set:
+    return {doc["id"] for doc in load_corpus(path)}
+
+
+def append_to_corpus(path: str, chunks: List[Dict[str, Any]], existing_ids: set = None):
+    """Appends chunks to the local corpus, skipping IDs that are already present.
+
+    Only the filter fields of the metadata are kept; BM25 sub-corpora are selected by them.
+    """
     corpus_file = Path(path)
     corpus_file.parent.mkdir(parents=True, exist_ok=True)
-    existing_ids = {doc["id"] for doc in load_corpus(path)}
+    existing_ids = existing_ids if existing_ids is not None else corpus_ids(path)
     with corpus_file.open("a") as f:
         for chunk in chunks:
             if chunk["id"] not in existing_ids:
-                f.write(json.dumps({"id": chunk["id"], "text": chunk["text"]}) + "\n")
+                metadata = {k: v for k, v in chunk.get("metadata", {}).items() if k in ("ticker", "fiscal_year")}
+                f.write(json.dumps({"id": chunk["id"], "text": chunk["text"], "metadata": metadata}) + "\n")
+                existing_ids.add(chunk["id"])
 
 
 class SparseStoreHandler:

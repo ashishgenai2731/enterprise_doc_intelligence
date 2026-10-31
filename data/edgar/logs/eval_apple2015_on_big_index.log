@@ -1,0 +1,70 @@
+start 2026-10-31 17:23:31
+L01: correct | audit pass | 118.0s
+L02: correct | audit pass | 55.3s
+L03: correct | audit pass | 117.3s
+L04: correct | audit pass | 56.4s
+L05: correct | audit pass | 62.3s
+L06: correct | audit pass | 50.1s
+L07: correct | audit pass | 73.1s
+L08: correct | audit pass | 132.0s
+L09: correct | audit pass | 138.4s
+L10: correct | audit pass | 102.4s
+L11: correct | audit pass | 53.5s
+L12: correct | audit pass | 54.4s
+L13: WRONG   | audit pass | 69.3s
+C01: WRONG   | audit pass | 83.7s
+C02: WRONG   | audit pass | 194.3s
+C03: correct | audit pass | 291.7s
+C04: WRONG   | audit fail | 152.1s
+C05: correct | audit pass | 93.5s
+C06: WRONG   | audit pass | 54.4s
+C07: correct | audit pass | 57.7s
+C08: correct | audit pass | 74.5s
+C09: WRONG   | audit fail | 159.3s
+C10: WRONG   | audit fail | 133.2s
+C11: correct | audit pass | 70.4s
+C12: WRONG   | audit pass | 53.2s
+
+| Metric | Value |
+|---|---|
+| Accuracy (all 25) | **68%** |
+| Accuracy, direct lookups | 92% |
+| Accuracy, computed metrics | 42% |
+| Audit pass rate | 88% |
+| False-pass rate (wrong but passed, of passed) | 23% |
+| Wrong answers caught by audit | 3 of 8 |
+| Answers with valid citations | 92% |
+| Avg. graph iterations | 1.72 |
+| Avg. latency per question | 100s |
+
+| ID | Expected | Correct | Audit | Iter. |
+|---|---|---|---|---|
+| L01 | 233715 | ✅ | pass | 2 |
+| L02 | 37037 | ✅ | pass | 1 |
+| L03 | 8067 | ✅ | pass | 1 |
+| L04 | 18034 | ✅ | pass | 1 |
+| L05 | 9.22 | ✅ | pass | 1 |
+| L06 | 1.98 | ✅ | pass | 1 |
+| L07 | 81266 | ✅ | pass | 1 |
+| L08 | 290479 | ✅ | pass | 2 |
+| L09 | 53463 | ✅ | pass | 2 |
+| L10 | 155041 | ✅ | pass | 2 |
+| L11 | 58715 | ✅ | pass | 1 |
+| L12 | 26.4 | ✅ | pass | 1 |
+| L13 | 11257 | ❌ | pass | 2 |
+| C01 | 27.86 | ❌ | pass | 2 |
+| C02 | 35.14 | ❌ | pass | 2 |
+| C03 | 24.19 | ✅ | pass | 3 |
+| C04 | 3.45 | ❌ | fail | 3 |
+| C05 | 30.48 | ✅ | pass | 2 |
+| C06 | 22.85 | ❌ | pass | 1 |
+| C07 | 84.33 | ✅ | pass | 1 |
+| C08 | 66.34 | ✅ | pass | 2 |
+| C09 | 0.448 | ❌ | fail | 3 |
+| C10 | 70019 | ❌ | fail | 3 |
+| C11 | -23.3 | ✅ | pass | 2 |
+| C12 | 23089 | ❌ | pass | 1 |
+real 2508.70
+user 37.06
+sys 26.83
+end 2026-10-31 18:05:19
