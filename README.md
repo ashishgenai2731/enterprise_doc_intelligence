@@ -122,6 +122,38 @@ docker run -d -p 8000:8000 --env-file .env enterprise-doc-intelligence:latest
 
 ---
 
+## Evaluation
+
+A 25-question golden set (`data/eval/golden_qa.jsonl`) built from the Apple FY2015 10-K: 13 direct lookups and 12 computed metrics (growth rates, margins, ratios, free cash flow). Every expected answer cites the parsed statement row it comes from. Scoring checks the number in the final report (±0.1 pts for percentages, ±0.5% for amounts) and whether the auditor caught the wrong ones.
+
+```bash
+python -m src.eval.golden_eval            # full run, writes data/eval/results.{json,md}
+python -m src.eval.golden_eval --ids C02  # single question
+```
+
+**Baseline (Mistral-7B via Ollama, hybrid retrieval on Pinecone):**
+
+| Metric | Value |
+|---|---|
+| Accuracy (all 25) | **52%** |
+| Accuracy, direct lookups | 69% |
+| Accuracy, computed metrics | 33% |
+| Audit pass rate | 88% |
+| False-pass rate (wrong but passed, of passed) | 45% |
+| Wrong answers caught by audit | 2 of 12 |
+| Answers with valid citations | 96% |
+| Avg. graph iterations | 1.52 |
+| Avg. latency per question | 148s |
+
+**What the failures show** (per-question reports in `data/eval/results.json`):
+* **Wrong inputs, right arithmetic.** Most computed-metric misses use a wrong row as input (e.g. a segment or quarterly figure instead of the consolidated one). The sandbox computes them correctly, so the grounding check passes them.
+* **The auditor rarely catches wrong-but-plausible numbers** (2 of 12). It checks that figures exist in the sources, not that they are the right line item for the question.
+* **Unit slips** such as "$23.09 million" for a $23,089 million change.
+
+These are the targets for the next iteration: check that every input literal in the generated code appears in a retrieved row with the right year, and compare a stronger local model against Mistral-7B on this same set.
+
+---
+
 ## Known Limitations
 
 * **Grounded is not the same as correct.** The auditor checks that every figure traces back to a source, not that the model picked the right line item. Measuring correctness needs a question set with known answers.

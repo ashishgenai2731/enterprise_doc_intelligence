@@ -142,6 +142,9 @@ async def auditor_node(state: AgentState) -> Dict[str, Any]:
         "or the calculated metrics.\n"
         "4. If passed=false, give a short retry_query naming the evidence that is missing."
     )
+    if state.get("audit_feedback"):
+        # Deterministic decoding would repeat the same mistake without being told what it was
+        prompt += f"\n\nThe previous draft failed the audit for these reasons - fix them:\n{state['audit_feedback']}"
 
     try:
         verdict: AuditVerdict = await get_llm().with_structured_output(AuditVerdict).ainvoke(prompt)
@@ -167,6 +170,11 @@ async def auditor_node(state: AgentState) -> Dict[str, Any]:
         for cid in re.split(r",|\band\b", group)
         if cid.strip() in known_ids
     ]
+
+    # A report with figures but no traceable source is not auditable, however plausible it reads
+    if _extract_numbers(verdict.summary) and not cited:
+        unsupported.append("Figures are not cited: add [Source: <chunk id>] after each figure")
+        passed = False
 
     return {
         "draft_report": verdict.summary,
