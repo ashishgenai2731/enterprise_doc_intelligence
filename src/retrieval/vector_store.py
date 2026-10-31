@@ -40,10 +40,11 @@ class VectorStoreHandler:
         for start in range(0, len(vectors_to_upsert), batch_size):
             self.index.upsert(vectors=vectors_to_upsert[start:start + batch_size])
 
-    def query(self, query_text: str, top_k: int = 20) -> List[Dict[str, Any]]:
-        """Generates dense vector representation and performs top-K lookup in Pinecone."""
+    def query(self, query_text: str, top_k: int = 20, filter: Dict[str, Any] = None) -> List[Dict[str, Any]]:
+        """Generates dense vector representation and performs top-K lookup in Pinecone,
+        optionally restricted by a metadata filter such as {'ticker': {'$in': ['AAPL']}}."""
         query_vector = self.embed_model.encode(query_text).tolist()
-        response = self.index.query(vector=query_vector, top_k=top_k, include_metadata=True)
+        response = self.index.query(vector=query_vector, top_k=top_k, include_metadata=True, filter=filter or None)
         return [{"id": m["id"], "score": m["score"], "metadata": m.get("metadata", {})} for m in
                 response["matches"]]
         # return response.get("matches", [])

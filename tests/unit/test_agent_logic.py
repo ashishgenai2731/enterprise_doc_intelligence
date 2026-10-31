@@ -23,7 +23,7 @@ class FakeVectorStore:
     def __init__(self, ids):
         self.ids = ids
 
-    def query(self, query_text, top_k=20):
+    def query(self, query_text, top_k=20, filter=None):
         return [{"id": i, "score": 0.5, "metadata": {}} for i in self.ids[:top_k]]
 
 
@@ -99,7 +99,7 @@ class RecordingRetriever:
         self.chunks = chunks
         self.queries = []
 
-    def retrieve(self, query, top_k=5):
+    def retrieve(self, query, top_k=5, filters=None):
         self.queries.append(query)
         return self.chunks
 

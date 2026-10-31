@@ -8,10 +8,12 @@ caught the wrong ones. The key metric is the false-pass rate: wrong answers the 
 Usage:
     python -m src.eval.golden_eval                 # all questions
     python -m src.eval.golden_eval --ids C02 L05   # a subset
+    python -m src.eval.golden_eval --golden data/eval/edgar_golden_qa.jsonl --sample 60 --out edgar_results
 """
 import argparse
 import asyncio
 import json
+import random
 import re
 import time
 from pathlib import Path
@@ -91,13 +93,26 @@ def to_markdown(summary: Dict[str, Any], results: List[Dict[str, Any]]) -> str:
     return "\n".join(lines)
 
 
-async def run(ids: List[str] = None) -> None:
+def sample_questions(golden: List[Dict[str, Any]], n: int, seed: int) -> List[Dict[str, Any]]:
+    """Half lookups, half computed, drawn with a fixed seed so runs are comparable."""
+    rng = random.Random(seed)
+    picked = []
+    for qtype in ("lookup", "computed"):
+        pool = [g for g in golden if g["type"] == qtype]
+        picked += rng.sample(pool, min(len(pool), n // 2 if qtype == "lookup" else n - n // 2))
+    return picked
+
+
+async def run(ids: List[str] = None, golden_path: Path = GOLDEN_PATH, sample: int = None,
+              seed: int = 7, out_name: str = "results") -> None:
     from src.agents.graph import build_financial_agent_graph
     from src.agents.state import initial_agent_state
 
-    golden = [json.loads(line) for line in GOLDEN_PATH.open() if line.strip()]
+    golden = [json.loads(line) for line in Path(golden_path).open() if line.strip()]
     if ids:
         golden = [g for g in golden if g["id"] in ids]
+    if sample:
+        golden = sample_questions(golden, sample, seed)
 
     graph = build_financial_agent_graph()
     results = []
@@ -114,21 +129,45 @@ async def run(ids: List[str] = None) -> None:
             "audit_passed": state.get("audit_passed", False),
             "sources": state.get("sources", []),
             "iterations": state.get("iteration_count", 0),
+            "search_filters": state.get("search_filters", {}),
             "latency_sec": round(time.perf_counter() - start, 1),
             "report": report,
         }
         results.append(result)
         print(f"{item['id']}: {'correct' if result['correct'] else 'WRONG  '} | "
               f"audit {'pass' if result['audit_passed'] else 'fail'} | {result['latency_sec']}s", flush=True)
+    write_results(results, out_name)
 
+
+def rescore(golden_path: Path, out_name: str) -> None:
+    """Re-check saved reports against the current golden answers, without re-running the agent
+    (used after a golden answer is corrected)."""
+    golden = {g["id"]: g for g in map(json.loads, Path(golden_path).open()) if g}
+    results = json.loads((OUT_DIR / f"{out_name}.json").read_text())["results"]
+    for result in results:
+        result["answer"] = golden[result["id"]]["answer"]
+        result["correct"] = is_correct(result["report"], result["answer"], result["unit"])
+    write_results(results, out_name)
+
+
+def write_results(results: List[Dict[str, Any]], out_name: str) -> None:
     summary = summarize(results)
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    (OUT_DIR / "results.json").write_text(json.dumps({"summary": summary, "results": results}, indent=2))
-    (OUT_DIR / "results.md").write_text(to_markdown(summary, results) + "\n")
+    (OUT_DIR / f"{out_name}.json").write_text(json.dumps({"summary": summary, "results": results}, indent=2))
+    (OUT_DIR / f"{out_name}.md").write_text(to_markdown(summary, results) + "\n")
     print("\n" + to_markdown(summary, results))
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--ids", nargs="*", help="Run only these question IDs")
-    asyncio.run(run(parser.parse_args().ids))
+    parser.add_argument("--golden", default=str(GOLDEN_PATH), help="Golden Q&A jsonl file")
+    parser.add_argument("--sample", type=int, help="Evaluate a fixed random sample of this size")
+    parser.add_argument("--seed", type=int, default=7)
+    parser.add_argument("--out", default="results", help="Output name under data/eval/")
+    parser.add_argument("--rescore", action="store_true", help="Re-score saved reports against the golden file")
+    args = parser.parse_args()
+    if args.rescore:
+        rescore(Path(args.golden), args.out)
+    else:
+        asyncio.run(run(args.ids, Path(args.golden), args.sample, args.seed, args.out))

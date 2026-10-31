@@ -1,3 +1,6 @@
 venv/
 .env
 data/corpus.jsonl
+data/edgar/raw/
+data/edgar/facts/
+data/edgar/corpus.jsonl

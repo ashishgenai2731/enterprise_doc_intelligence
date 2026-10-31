@@ -26,6 +26,13 @@ class Settings(BaseSettings):
     # BM25 needs the raw text in memory; Pinecone only gives us vectors back.
     CORPUS_PATH: str = "data/corpus.jsonl"
 
+    # SEC EDGAR blocks requests whose User-Agent has no contact email ("Name email@domain").
+    # Set it in .env, not here.
+    SEC_USER_AGENT: str = ""
+    EDGAR_DIR: str = "data/edgar"
+    # One row per indexed filing (ticker, fiscal_year, ...); query filters are resolved against it
+    FILINGS_MANIFEST: str = "data/edgar/filings.jsonl"
+
     # Hard wall-clock limit for one sandboxed Python execution over MCP
     SANDBOX_TIMEOUT_SEC: float = 10.0
 

@@ -11,6 +11,7 @@ class AgentState(TypedDict):
     retry_query: Optional[str]  # auditor's targeted search query for the next round
     unsupported_claims: List[str]
     sources: List[str]  # chunk IDs cited in the final report
+    search_filters: Dict[str, Any]  # company / fiscal-year metadata filter detected in the question
     iteration_count: int
 
 
@@ -26,5 +27,6 @@ def initial_agent_state(query: str) -> AgentState:
         "retry_query": None,
         "unsupported_claims": [],
         "sources": [],
+        "search_filters": {},
         "iteration_count": 0,
     }
