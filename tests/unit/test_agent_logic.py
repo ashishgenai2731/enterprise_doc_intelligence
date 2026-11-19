@@ -80,7 +80,7 @@ def test_invented_figure_is_flagged():
 
 
 def test_citation_ids_and_small_counts_are_ignored():
-    summary = "Across 3 segments [Source: Form10K.pdf-chunk-251-e5d228] costs rose."
+    summary = "Across 3 segments [Source: AAPL-FY2015-chunk-251] costs rose."
     assert find_ungrounded_numbers(summary, "") == []
 
 

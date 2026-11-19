@@ -4,7 +4,7 @@ Turns an EDGAR 10-K HTML (inline XBRL) document into plain text with tables kept
 EDGAR tables split one figure across several cells ('$' | '391,035' | ')') and position
 columns with colspans, so reading cells left to right loses which year a value belongs to.
 Each cell is placed on a column grid instead, and a value is assigned to the header cell whose
-grid span overlaps it, giving the same row format as the PDF parser:
+grid span overlaps it, so every row carries its year columns:
 
     Total net sales — 2024: 391,035; 2023: 383,285; 2022: 394,328
 """

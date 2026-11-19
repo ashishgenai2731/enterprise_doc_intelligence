@@ -1,7 +1,7 @@
 """
-Rebuilds the local BM25 corpus (data/corpus.jsonl) from the chunks already in Pinecone.
+Rebuilds the local BM25 corpus (settings.CORPUS_PATH) from the chunks already in Pinecone.
 
-Use this when the index was filled before ingest_doc.py started saving the corpus.
+Use this when the local corpus file is lost or out of sync with the index.
 Reading from Pinecone keeps the chunk IDs identical on both sides, which Reciprocal
 Rank Fusion needs to merge dense and sparse hits for the same chunk.
 Read-only against Pinecone.

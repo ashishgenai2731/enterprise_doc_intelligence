@@ -1,16 +1,16 @@
 {
   "summary": {
     "questions": 25,
-    "accuracy": 0.68,
-    "accuracy_lookup": 0.9230769230769231,
-    "accuracy_computed": 0.4166666666666667,
-    "audit_pass_rate": 0.88,
-    "false_pass_rate": 0.22727272727272727,
-    "wrong_caught_by_audit": 3,
-    "wrong_total": 8,
-    "citation_rate": 0.92,
-    "avg_iterations": 1.72,
-    "avg_latency_sec": 100.02
+    "accuracy": 0.64,
+    "accuracy_lookup": 0.7692307692307693,
+    "accuracy_computed": 0.5,
+    "audit_pass_rate": 0.76,
+    "false_pass_rate": 0.2631578947368421,
+    "wrong_caught_by_audit": 4,
+    "wrong_total": 9,
+    "citation_rate": 0.76,
+    "avg_iterations": 1.76,
+    "avg_latency_sec": 146.988
   },
   "results": [
     {
@@ -22,7 +22,60 @@
       "correct": true,
       "audit_passed": true,
       "sources": [
-        "AAPL-FY2015-chunk-263"
+        "AAPL-FY2015-chunk-392",
+        "AAPL-FY2015-chunk-355"
+      ],
+      "iterations": 1,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "AAPL"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2015
+          ]
+        }
+      },
+      "latency_sec": 281.9,
+      "report": "Apple's total net sales in fiscal 2015 were $233,715, representing a 27.86% increase from fiscal 2014 [Source: AAPL-FY2015-chunk-392, AAPL-FY2015-chunk-355]."
+    },
+    {
+      "id": "L02",
+      "type": "lookup",
+      "question": "What was Apple's net income in fiscal 2013?",
+      "answer": 37037,
+      "unit": "usd_millions",
+      "correct": false,
+      "audit_passed": false,
+      "sources": [],
+      "iterations": 3,
+      "search_filters": {
+        "ticker": {
+          "$in": [
+            "AAPL"
+          ]
+        },
+        "fiscal_year": {
+          "$in": [
+            2015
+          ]
+        }
+      },
+      "latency_sec": 553.9,
+      "report": "Apple's net income in fiscal 2013 was $48,999. This figure was calculated from the provided financial statements in the Apple (AAPL) 10-K for fiscal 2015 (Source: AAPL-FY2015-chunk-504)."
+    },
+    {
+      "id": "L03",
+      "type": "lookup",
+      "question": "How much did Apple spend on research and development in fiscal 2015?",
+      "answer": 8067,
+      "unit": "usd_millions",
+      "correct": true,
+      "audit_passed": true,
+      "sources": [
+        "AAPL-FY2015-chunk-107"
       ],
       "iterations": 2,
       "search_filters": {
@@ -37,62 +90,8 @@
           ]
         }
       },
-      "latency_sec": 118.0,
-      "report": "Apple's total net sales for fiscal 2015 were $233,715 million [Source: AAPL-FY2015-chunk-263]."
-    },
-    {
-      "id": "L02",
-      "type": "lookup",
-      "question": "What was Apple's net income in fiscal 2013?",
-      "answer": 37037,
-      "unit": "usd_millions",
-      "correct": true,
-      "audit_passed": true,
-      "sources": [
-        "AAPL-FY2015-chunk-408"
-      ],
-      "iterations": 1,
-      "search_filters": {
-        "ticker": {
-          "$in": [
-            "AAPL"
-          ]
-        },
-        "fiscal_year": {
-          "$in": [
-            2015
-          ]
-        }
-      },
-      "latency_sec": 55.3,
-      "report": "Apple's net income for fiscal year 2013 was $37,037 million, as reported in the Consolidated Statements of Comprehensive Income from the Apple (AAPL) 10-K for fiscal 2015 [Source: AAPL-FY2015-chunk-408]."
-    },
-    {
-      "id": "L03",
-      "type": "lookup",
-      "question": "How much did Apple spend on research and development in fiscal 2015?",
-      "answer": 8067,
-      "unit": "usd_millions",
-      "correct": true,
-      "audit_passed": true,
-      "sources": [
-        "AAPL-FY2015-chunk-617"
-      ],
-      "iterations": 1,
-      "search_filters": {
-        "ticker": {
-          "$in": [
-            "AAPL"
-          ]
-        },
-        "fiscal_year": {
-          "$in": [
-            2015
-          ]
-        }
-      },
-      "latency_sec": 117.3,
-      "report": "Apple spent $8,067 million on research and development in fiscal 2015, as per the Consolidated Statements of Operations [Source: AAPL-FY2015-chunk-617]."
+      "latency_sec": 433.3,
+      "report": "Apple spent $8.1 billion on research and development in fiscal 2015, as per the Apple (AAPL) 10-K for fiscal 2015 [Source: AAPL-FY2015-chunk-107]."
     },
     {
       "id": "L04",
@@ -103,12 +102,12 @@
       "correct": true,
       "audit_passed": true,
       "sources": [
-        "AAPL-FY2015-chunk-404"
+        "AAPL-FY2015-chunk-540"
       ],
-      "iterations": 1,
+      "iterations": 2,
       "search_filters": {},
-      "latency_sec": 56.4,
-      "report": "The total operating expenses for Apple in fiscal 2014 were $18,034, as calculated from the provided consolidated statements of operations in the Apple (AAPL) 10-K for fiscal 2015 [Source: AAPL-FY2015-chunk-404]"
+      "latency_sec": 99.0,
+      "report": "The total operating expenses for Apple in fiscal 2014 were $18,034 million [Source: AAPL-FY2015-chunk-540]."
     },
     {
       "id": "L05",
@@ -116,15 +115,15 @@
       "question": "What was diluted earnings per share for fiscal 2015?",
       "answer": 9.22,
       "unit": "usd",
-      "correct": true,
+      "correct": false,
       "audit_passed": true,
       "sources": [
-        "AAPL-FY2015-chunk-471"
+        "AAPL-FY2015-chunk-868"
       ],
-      "iterations": 1,
+      "iterations": 2,
       "search_filters": {},
-      "latency_sec": 62.3,
-      "report": "The diluted earnings per share for fiscal 2015 for Apple (AAPL) was 9.22, as calculated from the provided 10-K report [Source: AAPL-FY2015-chunk-471]."
+      "latency_sec": 85.1,
+      "report": "The diluted earnings per share for fiscal 2015 for Apple (AAPL) was 0.0092, as calculated from the provided 10-K report [Source: AAPL-FY2015-chunk-868]."
     },
     {
       "id": "L06",
@@ -135,12 +134,13 @@
       "correct": true,
       "audit_passed": true,
       "sources": [
-        "AAPL-FY2015-chunk-581"
+        "AAPL-FY2015-chunk-542",
+        "AAPL-FY2015-chunk-764"
       ],
       "iterations": 1,
       "search_filters": {},
-      "latency_sec": 50.1,
-      "report": "The cash dividends declared per share in fiscal 2015 for Apple Inc. were 1.98, as stated in [Source: AAPL-FY2015-chunk-581]."
+      "latency_sec": 42.0,
+      "report": "The cash dividends declared per share in fiscal 2015 for Apple Inc. were 1.98, as per the provided 10-K report [Source: AAPL-FY2015-chunk-542 and AAPL-FY2015-chunk-764]."
     },
     {
       "id": "L07",
@@ -152,12 +152,12 @@
       "audit_passed": true,
       "sources": [
         "AAPL-FY2015-chunk-425",
-        "AAPL-FY2015-chunk-428"
+        "AAPL-FY2015-chunk-560"
       ],
       "iterations": 1,
       "search_filters": {},
-      "latency_sec": 73.1,
-      "report": "The cash generated by operating activities in fiscal 2015 for Apple (AAPL) was $81,266 million. This figure was derived from the consolidated statements of cash flows for fiscal 2015, which shows a net income of $53,394 million, adjustments for depreciation and amortization, and cash generated from operating activities of $81,266 million [Source: AAPL-FY2015-chunk-425, AAPL-FY2015-chunk-428]."
+      "latency_sec": 67.4,
+      "report": "The cash generated by operating activities in fiscal 2015 for Apple (AAPL) was $81.3 billion [Source: AAPL-FY2015-chunk-425]. This was calculated by adding net income ($53.4 billion [Source: AAPL-FY2015-chunk-560]), non-cash adjustments to net income ($16.2 billion [Source: AAPL-FY2015-chunk-425]), and an increase in the net change in operating assets and liabilities ($11.7 billion [Source: AAPL-FY2015-chunk-425])."
     },
     {
       "id": "L08",
@@ -166,15 +166,9 @@
       "answer": 290479,
       "unit": "usd_millions",
       "correct": true,
-      "audit_passed": true,
-      "sources": [
-        "AAPL-FY2015-chunk-414",
-        "AAPL-FY2015-chunk-415",
-        "AAPL-FY2015-chunk-416",
-        "AAPL-FY2015-chunk-245",
-        "AAPL-FY2015-chunk-535"
-      ],
-      "iterations": 2,
+      "audit_passed": false,
+      "sources": [],
+      "iterations": 3,
       "search_filters": {
         "ticker": {
           "$in": [
@@ -187,8 +181,8 @@
           ]
         }
       },
-      "latency_sec": 132.0,
-      "report": "Apple's total assets at the end of fiscal 2015 were $290,479, as calculated from the provided financial statements [Source: AAPL-FY2015-chunk-414, AAPL-FY2015-chunk-415, AAPL-FY2015-chunk-416, AAPL-FY2015-chunk-245, AAPL-FY2015-chunk-535]."
+      "latency_sec": 297.7,
+      "report": "Apple's total assets at the end of fiscal 2015 were $290,479. This figure includes current assets of $89,378 (Source: AAPL-FY2015-chunk-550), long-term marketable securities of $164,065 (Source: AAPL-FY2015-chunk-550), property, plant and equipment, net of $22,471 (Source: AAPL-FY2015-chunk-550), goodwill of $5,116 (Source: AAPL-FY2015-chunk-550), acquired intangible assets, net of $3,893 (Source: AAPL-FY2015-chunk-550), and other assets of $5,556 (Source: AAPL-FY2015-chunk-550)."
     },
     {
       "id": "L09",
@@ -197,11 +191,9 @@
       "answer": 53463,
       "unit": "usd_millions",
       "correct": true,
-      "audit_passed": true,
-      "sources": [
-        "AAPL-FY2015-chunk-575"
-      ],
-      "iterations": 2,
+      "audit_passed": false,
+      "sources": [],
+      "iterations": 3,
       "search_filters": {
         "ticker": {
           "$in": [
@@ -214,8 +206,8 @@
           ]
         }
       },
-      "latency_sec": 138.4,
-      "report": "Apple's long-term debt at the end of fiscal 2015 was $53,463 million [Source: AAPL-FY2015-chunk-575]."
+      "latency_sec": 372.5,
+      "report": "Apple's long-term debt at the end of fiscal 2015 was 53,463 (Source: AAPL-FY2015-chunk-756)."
     },
     {
       "id": "L10",
@@ -226,13 +218,12 @@
       "correct": true,
       "audit_passed": true,
       "sources": [
-        "AAPL-FY2015-chunk-266",
-        "AAPL-FY2015-chunk-655"
+        "AAPL-FY2015-chunk-376"
       ],
-      "iterations": 2,
+      "iterations": 1,
       "search_filters": {},
-      "latency_sec": 102.4,
-      "report": "In fiscal 2015, Apple's iPhone net sales were $155,041 million, representing 66.34% of the total net sales. This represents a 52.01% year-over-year increase compared to fiscal 2014. [Source: AAPL-FY2015-chunk-266, AAPL-FY2015-chunk-655]"
+      "latency_sec": 81.6,
+      "report": "The net sales for iPhone in fiscal 2015 were $155,041 million, as calculated from the provided financial statements [Source: AAPL-FY2015-chunk-376]"
     },
     {
       "id": "L11",
@@ -243,12 +234,15 @@
       "correct": true,
       "audit_passed": true,
       "sources": [
-        "AAPL-FY2015-chunk-652"
+        "AAPL-FY2015-chunk-383",
+        "AAPL-FY2015-chunk-353",
+        "AAPL-FY2015-chunk-858",
+        "AAPL-FY2015-chunk-384"
       ],
       "iterations": 1,
       "search_filters": {},
-      "latency_sec": 53.5,
-      "report": "The net sales in the Greater China segment for fiscal 2015 were $58,428.75 million [Source: AAPL-FY2015-chunk-652]."
+      "latency_sec": 86.2,
+      "report": "The net sales in the Greater China segment for fiscal 2015 were 58,715 million dollars, as calculated from the provided financial statements [Source: AAPL-FY2015-chunk-383, AAPL-FY2015-chunk-353, AAPL-FY2015-chunk-858, AAPL-FY2015-chunk-384]."
     },
     {
       "id": "L12",
@@ -259,10 +253,11 @@
       "correct": true,
       "audit_passed": true,
       "sources": [
-        "AAPL-FY2015-chunk-304",
-        "AAPL-FY2015-chunk-549"
+        "AAPL-FY2015-chunk-406",
+        "AAPL-FY2015-chunk-407",
+        "AAPL-FY2015-chunk-722"
       ],
-      "iterations": 1,
+      "iterations": 2,
       "search_filters": {
         "ticker": {
           "$in": [
@@ -275,8 +270,8 @@
           ]
         }
       },
-      "latency_sec": 54.4,
-      "report": "Apple's effective tax rate for fiscal 2015 was 26.4%. This rate was calculated by subtracting the indefinitely invested earnings, domestic production activities deduction, research and development credit, and other expenses from the provision for income taxes, and then dividing the result by the total revenue. [Source: AAPL-FY2015-chunk-304, AAPL-FY2015-chunk-549]"
+      "latency_sec": 222.9,
+      "report": "Apple's effective tax rate in fiscal 2015 was 26.4%. This rate was lower than the statutory federal income tax rate of 35% due to certain undistributed foreign earnings, a substantial portion of which was generated by subsidiaries organized in Ireland, for which no U.S. taxes are provided when such earnings are intended to be indefinitely reinvested outside [Source: AAPL-FY2015-chunk-406, AAPL-FY2015-chunk-407, AAPL-FY2015-chunk-722]."
     },
     {
       "id": "L13",
@@ -291,7 +286,7 @@
       ],
       "iterations": 2,
       "search_filters": {},
-      "latency_sec": 69.3,
+      "latency_sec": 49.9,
       "report": "The depreciation and amortization expense for Home Depot (HD) in fiscal 2015 was $3,452 million, as per the data provided in the Home Depot (HD) 10-K for fiscal 2025 [Source: HD-FY2025-chunk-681]"
     },
     {
@@ -301,17 +296,12 @@
       "answer": 27.86,
       "unit": "percent",
       "correct": false,
-      "audit_passed": true,
-      "sources": [
-        "AAPL-FY2015-chunk-253",
-        "AAPL-FY2015-chunk-274",
-        "AAPL-FY2015-chunk-284",
-        "AAPL-FY2015-chunk-288"
-      ],
-      "iterations": 2,
+      "audit_passed": false,
+      "sources": [],
+      "iterations": 3,
       "search_filters": {},
-      "latency_sec": 83.7,
-      "report": "The percentage change in total net sales from fiscal 2014 to 2015 was 20.08%. This increase was primarily driven by a 52% year-over-year increase in iPhone net sales, a 29% growth in the App Store (included within Internet Services), and strong year-over-year increases in net sales in Greater China and the Rest of Asia Pacific. [Source: AAPL-FY2015-chunk-253, AAPL-FY2015-chunk-274, AAPL-FY2015-chunk-284, AAPL-FY2015-chunk-288]"
+      "latency_sec": 86.4,
+      "report": "The percentage change in total net sales from fiscal 2014 to 2015 was 13.55%. This figure was calculated by adding the net sales from Americas, Europe, Greater China, and Services (as per the provided source context) for both fiscal years and then calculating the percentage change."
     },
     {
       "id": "C02",
@@ -322,12 +312,12 @@
       "correct": false,
       "audit_passed": true,
       "sources": [
-        "AAPL-FY2015-chunk-548"
+        "AAPL-FY2015-chunk-403"
       ],
       "iterations": 2,
       "search_filters": {},
-      "latency_sec": 194.3,
-      "report": "The percentage change in net income from fiscal 2014 to 2015 could not be directly determined from the provided source context. However, the change in income before taxes provides an indirect measure. The income before taxes for fiscal 2015 was $25,380 million [Source: AAPL-FY2015-chunk-548], while for fiscal 2014 it was $24,079 million [Source: AAPL-FY2015-chunk-548]. The difference between the two, calculated as a percentage of the 2014 income before taxes, gives an indirect measure of the percentage change in net income. This difference is -40.80% [Source: Calculated Metrics]."
+      "latency_sec": 176.1,
+      "report": "The percentage change in net income from fiscal 2014 to 2015 was 31.12%. This figure is calculated from the interest and dividend income, interest expense, and other expense, net as reported in the Apple (AAPL) 10-K for fiscal 2015 [Source: AAPL-FY2015-chunk-403]."
     },
     {
       "id": "C03",
@@ -338,13 +328,12 @@
       "correct": true,
       "audit_passed": true,
       "sources": [
-        "AAPL-FY2015-chunk-298",
-        "AAPL-FY2015-chunk-405"
+        "AAPL-FY2015-chunk-379"
       ],
-      "iterations": 3,
+      "iterations": 1,
       "search_filters": {},
-      "latency_sec": 291.7,
-      "report": "The total operating expenses for Apple in fiscal 2015 increased by 24.19% compared to fiscal 2014. This information can be found in [Source: AAPL-FY2015-chunk-298] and [Source: AAPL-FY2015-chunk-405]."
+      "latency_sec": 47.1,
+      "report": "The percentage change in total operating expenses from fiscal 2014 to 2015 was 24.19% [Source: AAPL-FY2015-chunk-379]"
     },
     {
       "id": "C04",
@@ -352,16 +341,15 @@
       "question": "What percentage of total net sales was spent on research and development in fiscal 2015?",
       "answer": 3.45,
       "unit": "percent",
-      "correct": false,
-      "audit_passed": false,
+      "correct": true,
+      "audit_passed": true,
       "sources": [
-        "AAPL-FY2015-chunk-298",
-        "ABBV-FY2025-chunk-537"
+        "AAPL-FY2015-chunk-379"
       ],
-      "iterations": 3,
+      "iterations": 1,
       "search_filters": {},
-      "latency_sec": 152.1,
-      "report": "In fiscal 2015, Apple (AAPL) spent 3.03% of its total net sales on research and development, as per the provided financial statements [Source: AAPL-FY2015-chunk-298]. For AbbVie (ABBV) in fiscal 2025, the percentage of net revenues spent on research and development was 19.57% [Source: ABBV-FY2025-chunk-537]."
+      "latency_sec": 40.2,
+      "report": "The percentage of total net sales spent on research and development in fiscal 2015 for Apple was 3.45% [Source: AAPL-FY2015-chunk-379]."
     },
     {
       "id": "C05",
@@ -372,9 +360,9 @@
       "correct": true,
       "audit_passed": true,
       "sources": [
-        "AAPL-FY2015-chunk-658"
+        "AAPL-FY2015-chunk-867"
       ],
-      "iterations": 2,
+      "iterations": 1,
       "search_filters": {
         "ticker": {
           "$in": [
@@ -387,8 +375,8 @@
           ]
         }
       },
-      "latency_sec": 93.5,
-      "report": "Apple's operating margin (operating income as a percentage of net sales) in fiscal 2015 was 30.48% [Source: AAPL-FY2015-chunk-658]."
+      "latency_sec": 54.9,
+      "report": "Apple's operating margin in fiscal 2015 was 30.47%, as calculated from the provided financial statements [Source: AAPL-FY2015-chunk-867]."
     },
     {
       "id": "C06",
@@ -399,7 +387,9 @@
       "correct": false,
       "audit_passed": true,
       "sources": [
-        "AAPL-FY2015-chunk-264"
+        "AAPL-FY2015-chunk-392",
+        "AAPL-FY2015-chunk-540",
+        "AAPL-FY2015-chunk-866"
       ],
       "iterations": 1,
       "search_filters": {
@@ -414,8 +404,8 @@
           ]
         }
       },
-      "latency_sec": 54.4,
-      "report": "Apple's net profit margin (net income as a percentage of net sales) for fiscal 2015 was 4.76% [Source: AAPL-FY2015-chunk-264]."
+      "latency_sec": 61.0,
+      "report": "Apple's net profit margin for fiscal 2015 was 4.76% [Source: AAPL-FY2015-chunk-392, AAPL-FY2015-chunk-540, AAPL-FY2015-chunk-866]."
     },
     {
       "id": "C07",
@@ -426,12 +416,12 @@
       "correct": true,
       "audit_passed": true,
       "sources": [
-        "AAPL-FY2015-chunk-284"
+        "AAPL-FY2015-chunk-384"
       ],
       "iterations": 1,
       "search_filters": {},
-      "latency_sec": 57.7,
-      "report": "The Greater China net sales grew by 84.33% from fiscal 2014 to 2015, as reported in the Apple (AAPL) 10-K for fiscal 2015 [Source: AAPL-FY2015-chunk-284]."
+      "latency_sec": 49.3,
+      "report": "The Greater China net sales grew by 84.33% from fiscal 2014 to 2015, as reported in the Apple Inc. 10-K for fiscal 2015 [Source: AAPL-FY2015-chunk-384]"
     },
     {
       "id": "C08",
@@ -442,12 +432,12 @@
       "correct": true,
       "audit_passed": true,
       "sources": [
-        "AAPL-FY2015-chunk-264"
+        "AAPL-FY2015-chunk-358"
       ],
       "iterations": 2,
       "search_filters": {},
-      "latency_sec": 74.5,
-      "report": "In fiscal 2015, the iPhone accounted for 66.34% of Apple's total net sales. [Source: AAPL-FY2015-chunk-264]"
+      "latency_sec": 73.8,
+      "report": "In fiscal 2015, iPhone accounted for 66.34% of Apple's total net sales. [Source: AAPL-FY2015-chunk-358]"
     },
     {
       "id": "C09",
@@ -456,12 +446,15 @@
       "answer": 0.448,
       "unit": "ratio",
       "correct": false,
-      "audit_passed": false,
-      "sources": [],
-      "iterations": 3,
+      "audit_passed": true,
+      "sources": [
+        "AAPL-FY2015-chunk-756",
+        "AAPL-FY2015-chunk-553"
+      ],
+      "iterations": 1,
       "search_filters": {},
-      "latency_sec": 159.3,
-      "report": "The ratio of long-term debt to total shareholders' equity at the end of fiscal 2015 for Apple Inc. was 0.6129 (Source: AAPL-FY2015-chunk-575 and AAPL-FY2015-chunk-417)."
+      "latency_sec": 84.4,
+      "report": "The ratio of long-term debt to total shareholders' equity at the end of fiscal 2015 for Apple (AAPL) was 0.31, as calculated from the provided financial data [Source: AAPL-FY2015-chunk-756, AAPL-FY2015-chunk-553, and the generated code]."
     },
     {
       "id": "C10",
@@ -474,7 +467,7 @@
       "sources": [],
       "iterations": 3,
       "search_filters": {},
-      "latency_sec": 133.2,
+      "latency_sec": 134.1,
       "report": "The free cash flow for fiscal 2015, as calculated based on the provided context, is $13,800 million. This figure is derived by subtracting capital expenditure of $10,000 million from the operating cash flow of $18,800 million (assumed from fiscal 2023), and adding sales of property, plant and equipment of $5,000 million (assumed from fiscal 2023)."
     },
     {
@@ -486,12 +479,12 @@
       "correct": true,
       "audit_passed": true,
       "sources": [
-        "AAPL-FY2015-chunk-269"
+        "AAPL-FY2015-chunk-362"
       ],
-      "iterations": 2,
+      "iterations": 1,
       "search_filters": {},
-      "latency_sec": 70.4,
-      "report": "The percentage change in iPad net sales from fiscal 2014 to 2015 was a decrease of 23.3% [Source: AAPL-FY2015-chunk-269]."
+      "latency_sec": 53.3,
+      "report": "The percentage change in iPad net sales from fiscal 2014 to 2015 was a decrease of 23.3% [Source: AAPL-FY2015-chunk-362]"
     },
     {
       "id": "C12",
@@ -500,14 +493,12 @@
       "answer": 23089,
       "unit": "usd_millions",
       "correct": false,
-      "audit_passed": true,
-      "sources": [
-        "AAPL-FY2015-chunk-291"
-      ],
-      "iterations": 1,
+      "audit_passed": false,
+      "sources": [],
+      "iterations": 3,
       "search_filters": {},
-      "latency_sec": 53.2,
-      "report": "The gross margin increased by $23.09 million from fiscal 2014 to 2015, as calculated from the provided Apple (AAPL) 10-K for fiscal 2015 [Source: AAPL-FY2015-chunk-291]."
+      "latency_sec": 140.7,
+      "report": "The gross margin increased by $25.0 billion from fiscal 2014 to 2015, as calculated from the provided financial statements of Microsoft (MSFT)."
     }
   ]
 }

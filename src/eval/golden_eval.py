@@ -164,7 +164,7 @@ if __name__ == "__main__":
     parser.add_argument("--golden", default=str(GOLDEN_PATH), help="Golden Q&A jsonl file")
     parser.add_argument("--sample", type=int, help="Evaluate a fixed random sample of this size")
     parser.add_argument("--seed", type=int, default=7)
-    parser.add_argument("--out", default="results", help="Output name under data/eval/")
+    parser.add_argument("--out", default="apple2015", help="Output name under data/eval/")
     parser.add_argument("--rescore", action="store_true", help="Re-score saved reports against the golden file")
     args = parser.parse_args()
     if args.rescore:

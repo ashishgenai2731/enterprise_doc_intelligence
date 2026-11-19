@@ -6,7 +6,7 @@ def test_billions_are_converted_to_millions():
 
 
 def test_citation_ids_do_not_count_as_answers():
-    assert not is_correct("No figure [Source: Form10K.pdf-chunk-408]", 408, "usd_millions")
+    assert not is_correct("No figure [Source: AAPL-FY2015-chunk-408]", 408, "usd_millions")
 
 
 def test_percent_tolerance_and_loose_sign():

@@ -18,7 +18,7 @@ FROM python:3.11-slim AS runner
 
 WORKDIR /app
 
-# Install runtime C++ libraries required by PyMuPDF and Torch
+# Install runtime C/C++ libraries needed by Torch and other native wheels
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libglib2.0-0 \
     libgomp1 \

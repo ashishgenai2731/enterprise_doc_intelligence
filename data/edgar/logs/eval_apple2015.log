@@ -1,0 +1,245 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/391 [00:00<?, ?it/s]Loading weights: 100%|██████████| 391/391 [00:00<00:00, 6424.92it/s]
+Loading weights:   0%|          | 0/393 [00:00<?, ?it/s]Loading weights: 100%|██████████| 393/393 [00:00<00:00, 6975.27it/s]
+[11/19/26 19:02:49] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+L01: correct | audit pass | 281.9s
+[11/19/26 19:09:53] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+[11/19/26 19:12:08] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+[11/19/26 19:13:13] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+L02: WRONG   | audit fail | 553.9s
+[11/19/26 19:18:01] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+[11/19/26 19:20:40] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+L03: correct | audit pass | 433.3s
+[11/19/26 19:21:34] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+[11/19/26 19:22:24] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+L04: correct | audit pass | 99.0s
+[11/19/26 19:23:05] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+[11/19/26 19:23:47] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+L05: WRONG   | audit pass | 85.1s
+[11/19/26 19:24:19] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+L06: correct | audit pass | 42.0s
+[11/19/26 19:25:13] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+L07: correct | audit pass | 67.4s
+[11/19/26 19:26:43] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+[11/19/26 19:28:29] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+[11/19/26 19:29:52] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+L08: correct | audit fail | 297.7s
+[11/19/26 19:32:34] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+[11/19/26 19:34:53] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+[11/19/26 19:36:42] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+L09: correct | audit fail | 372.5s
+[11/19/26 19:37:46] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+L10: correct | audit pass | 81.6s
+[11/19/26 19:39:01] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+L11: correct | audit pass | 86.2s
+[11/19/26 19:41:29] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+[11/19/26 19:42:59] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+L12: correct | audit pass | 222.9s
+[11/19/26 19:43:46] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+[11/19/26 19:44:09] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+L13: WRONG   | audit pass | 49.9s
+[11/19/26 19:44:40] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+[11/19/26 19:45:12] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+[11/19/26 19:45:36] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+C01: WRONG   | audit fail | 86.4s
+[11/19/26 19:46:52] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+[11/19/26 19:48:29] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+C02: WRONG   | audit pass | 176.1s
+[11/19/26 19:49:07] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+C03: correct | audit pass | 47.1s
+[11/19/26 19:49:48] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+C04: correct | audit pass | 40.2s
+[11/19/26 19:50:37] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+C05: correct | audit pass | 54.9s
+[11/19/26 19:51:36] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+C06: WRONG   | audit pass | 61.0s
+[11/19/26 19:52:32] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+C07: correct | audit pass | 49.3s
+[11/19/26 19:53:16] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+[11/19/26 19:53:57] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+C08: correct | audit pass | 73.8s
+[11/19/26 19:55:00] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+C09: WRONG   | audit pass | 84.4s
+[11/19/26 19:56:00] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+[11/19/26 19:56:50] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+[11/19/26 19:57:32] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+C10: WRONG   | audit fail | 134.1s
+[11/19/26 19:58:15] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+C11: correct | audit pass | 53.3s
+[11/19/26 19:59:20] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+[11/19/26 20:00:13] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+[11/19/26 20:00:50] INFO     Processing request of type            server.py:733
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:733
+                             ListToolsRequest                                   
+C12: WRONG   | audit fail | 140.7s
+
+| Metric | Value |
+|---|---|
+| Accuracy (all 25) | **64%** |
+| Accuracy, direct lookups | 77% |
+| Accuracy, computed metrics | 50% |
+| Audit pass rate | 76% |
+| False-pass rate (wrong but passed, of passed) | 26% |
+| Wrong answers caught by audit | 4 of 9 |
+| Answers with valid citations | 76% |
+| Avg. graph iterations | 1.76 |
+| Avg. latency per question | 147s |
+
+| ID | Expected | Correct | Audit | Iter. |
+|---|---|---|---|---|
+| L01 | 233715 | ✅ | pass | 1 |
+| L02 | 37037 | ❌ | fail | 3 |
+| L03 | 8067 | ✅ | pass | 2 |
+| L04 | 18034 | ✅ | pass | 2 |
+| L05 | 9.22 | ❌ | pass | 2 |
+| L06 | 1.98 | ✅ | pass | 1 |
+| L07 | 81266 | ✅ | pass | 1 |
+| L08 | 290479 | ✅ | fail | 3 |
+| L09 | 53463 | ✅ | fail | 3 |
+| L10 | 155041 | ✅ | pass | 1 |
+| L11 | 58715 | ✅ | pass | 1 |
+| L12 | 26.4 | ✅ | pass | 2 |
+| L13 | 11257 | ❌ | pass | 2 |
+| C01 | 27.86 | ❌ | fail | 3 |
+| C02 | 35.14 | ❌ | pass | 2 |
+| C03 | 24.19 | ✅ | pass | 1 |
+| C04 | 3.45 | ✅ | pass | 1 |
+| C05 | 30.48 | ✅ | pass | 1 |
+| C06 | 22.85 | ❌ | pass | 1 |
+| C07 | 84.33 | ✅ | pass | 1 |
+| C08 | 66.34 | ✅ | pass | 2 |
+| C09 | 0.448 | ❌ | pass | 1 |
+| C10 | 70019 | ❌ | fail | 3 |
+| C11 | -23.3 | ✅ | pass | 1 |
+| C12 | 23089 | ❌ | fail | 3 |
+PYTHONPATH=. venv/bin/python -m src.eval.golden_eval --out apple2015  51.36s user 65.38s system 3% cpu 1:01:29.29 total
