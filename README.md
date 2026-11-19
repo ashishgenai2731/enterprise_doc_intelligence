@@ -3,7 +3,7 @@ Markdown
 
 An enterprise-grade, stateful multi-agent document intelligence platform built with **LangGraph**, **FastAPI**, **Pinecone**, and **Ollama**. The system executes hybrid RAG retrieval (Dense + Sparse), sandboxed Python quantitative execution, and adversarial self-correcting compliance auditing over complex SEC 10-K financial filings.
 
-**Corpus:** 89 annual reports (10-K) from 30 US companies, fiscal years 2023–2026, pulled from SEC EDGAR, plus Apple's FY2015 10-K PDF: 5.2 million words, 98,137 indexed chunks. Every step's timing and result is in [`docs/PROJECT_METRICS.md`](docs/PROJECT_METRICS.md).
+**Corpus:** 90 annual reports (10-K) from 30 US companies, all pulled from SEC EDGAR: fiscal years 2023–2026 for every company, plus Apple FY2015 for the hand-written test set. 5.2 million words, 98,355 indexed chunks. Every step's timing and result is in [`docs/PROJECT_METRICS.md`](docs/PROJECT_METRICS.md).
 
 ---
 
@@ -52,13 +52,12 @@ An enterprise-grade, stateful multi-agent document intelligence platform built w
 ## Core Features
 
 * **Stateful Orchestration:** Utilizes LangGraph `StateGraph` primitives to enforce guarded, deterministic multi-agent loops over open-ended prompt chains (max 3 rounds).
-* **Hybrid RAG & Cross-Encoder Reranking:** Pinecone dense retrieval (BGE-large) and BM25 sparse retrieval are fused with Reciprocal Rank Fusion, then reranked by a BGE cross-encoder. The BM25 corpus lives in `data/corpus.jsonl` and uses the same chunk IDs as Pinecone.
+* **Hybrid RAG & Cross-Encoder Reranking:** Pinecone dense retrieval (BGE-large) and BM25 sparse retrieval are fused with Reciprocal Rank Fusion, then reranked by a BGE cross-encoder. BM25 runs in-process over a local corpus file (`data/edgar/corpus.jsonl`) with the same chunk IDs as Pinecone, on the same company/year subset.
 * **Sandboxed Code Execution over MCP:** Generated Python arithmetic runs in a separate FastMCP server process with a restricted builtin scope and a hard timeout (`SANDBOX_TIMEOUT_SEC`); runaway code is killed with its process.
 * **Structured, Double-Checked Auditing:** The auditor returns a typed verdict (`passed`, `unsupported_claims`, `retry_query`) instead of a magic string. A deterministic check then verifies every figure in the report appears in the retrieved sources or the sandbox output, so the LLM is not the only judge of its own numbers.
 * **Targeted Self-Correction:** On a failed audit, the next round searches for the specific missing evidence (`retry_query`) and adds it to the earlier context instead of starting over.
 * **Source Citations:** Every figure in the report cites its chunk (`[Source: <chunk id>]`); the API returns the verified `sources` list.
-* **Table-Aware PDF Parsing:** Financial statements are rebuilt from word positions so every row carries its year columns (`Net income — 2015: 53,394; 2014: 39,510; 2013: 37,037`). This survives chunking, where a header-less table row would otherwise be meaningless.
-* **EDGAR HTML Parsing:** Inline-XBRL 10-K tables split one figure over several cells (`$ | 391,035 | )`) and place columns with colspans. Cells are laid on a column grid and each value is matched to the header it overlaps, giving the same `row — year: value` format as the PDF parser.
+* **EDGAR HTML Parsing:** Inline-XBRL 10-K tables split one figure over several cells (`$ | 391,035 | )`) and place columns with colspans. Cells are laid on a column grid and each value is matched to the header it overlaps, so every row carries its year columns (`Net income — 2015: 53,394; 2014: 39,510; 2013: 37,037`). This survives chunking, where a header-less table row would otherwise be meaningless. HTML is used rather than PDF because the SEC files HTML: it keeps real table cells and the XBRL tags, while a PDF printout has only word positions.
 * **Company / Year Filtered Search:** Each chunk starts with `[Apple Inc. (AAPL) 10-K, fiscal 2024]` and carries `ticker` / `fiscal_year` metadata. Company names and years in the question become a Pinecone metadata filter, and BM25 runs over the same filtered subset, so a question about Apple's 2024 net income is not answered from Microsoft's filing. If the filter finds nothing, search falls back to the whole index.
 * **Semantic Answer Cache (Redis):** A reworded question ("How much revenue did Apple make in FY2024?") reuses an audited answer in 0.06 s instead of a 193 s agent run. Embeddings alone cannot separate "net income" from "operating income" or 2023 from 2024 (measured similarities overlap), so answers are bucketed by a deterministic scope key (company + fiscal year + line item, and never for segment, quarter or adjusted figures) and reused only above cosine 0.80 inside the bucket. Calibrated on 3,376 question pairs: 0 wrong reuses in 3,184 trap pairs, 81% of rewordings hit (`scripts/calibrate_semantic_cache.py`). Only answers that passed the audit are cached; Redis failures fall back to running the agent.
 * **QLoRA Fine-Tuning Pipeline:** `src/training/` builds a Code Executor training set from the XBRL golden set (companies held out from the eval sample) and fine-tunes Mistral-7B-Instruct v0.3 with 4-bit QLoRA; see [`src/training/README.md`](src/training/README.md).
@@ -102,7 +101,6 @@ pip install -r requirements.txt
 ollama pull mistral
 python -m scripts.edgar_download      # 3 latest 10-Ks + XBRL facts for each company in config/companies.py
 python -m scripts.ingest_edgar        # parse, chunk, embed -> Pinecone + data/edgar/corpus.jsonl (resumable)
-python -m scripts.ingest_edgar --pdf ~/Downloads/Form10K.pdf --ticker AAPL --fiscal-year 2015   # add a local PDF
 python -m src.eval.edgar_golden       # build the XBRL golden set -> data/eval/edgar_golden_qa.jsonl
 ```
 
@@ -128,9 +126,10 @@ python -m pytest -v                                   # full suite incl. live re
 ```
 
 ```bash
-docker build -t enterprise-doc-intelligence:latest .
-docker run -d -p 8000:8000 --env-file .env enterprise-doc-intelligence:latest
+make up        # docker compose: api + redis (health-checked); see the Makefile for down / logs / test
 ```
+
+The API container calls Ollama on the host (`OLLAMA_BASE_URL=http://host.docker.internal:11434`) and mounts the BM25 corpus and filings manifest read-only, so run `ollama serve` and the ingestion step on the host first.
 
 ---
 
@@ -145,7 +144,7 @@ python -m src.eval.golden_eval --golden data/eval/edgar_golden_qa.jsonl --sample
 python -m src.eval.golden_eval --golden data/eval/edgar_golden_qa.jsonl --out edgar_results --rescore   # after fixing a golden answer
 ```
 
-**60-question sample (seed 7, 23 companies) on the 98,137-chunk index, Mistral-7B:**
+**60-question sample (seed 7, 23 companies), Mistral-7B, measured on the 98,137-chunk index before Apple FY2015 was re-indexed from HTML (the 60 questions cover FY2023–2026 only):**
 
 | Metric | Value |
 |---|---|

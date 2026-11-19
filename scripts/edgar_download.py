@@ -58,7 +58,7 @@ def main(years: int, tickers=None):
             print(f"{ticker} FY{row['fiscal_year']} (period end {row['report_date']}): "
                   f"{raw_path.stat().st_size / 1e6:.1f} MB", flush=True)
 
-    # Merge by accession, so rows added another way (a local PDF) survive a re-download
+    # Merge by accession, so rows added another way (e.g. --tickers runs, or an older year) survive a re-download
     manifest_path = Path(settings.FILINGS_MANIFEST)
     rows = {}
     if manifest_path.exists():

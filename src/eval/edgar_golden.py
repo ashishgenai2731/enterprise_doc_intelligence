@@ -165,12 +165,16 @@ def build_questions(filing: Dict[str, Any], values: Dict[str, float], text: str)
     return questions
 
 
+HAND_WRITTEN_SETS = {("AAPL", 2015)}
+
+
 def main():
     from src.ingestion.html_parser import html_to_text
 
     rows = [json.loads(line) for line in Path(settings.FILINGS_MANIFEST).read_text().splitlines() if line.strip()]
-    # Local PDFs have no XBRL; the hand-built golden_qa.jsonl covers Apple 2015
-    filings = [f for f in rows if not f["path"].endswith(".pdf")]
+    # Apple FY2015 has its own hand-written set (data/eval/golden_qa.jsonl); leaving it out keeps
+    # this set, and the seeded 60-question sample drawn from it, unchanged
+    filings = [f for f in rows if (f["ticker"], f["fiscal_year"]) not in HAND_WRITTEN_SETS]
     questions, dropped = [], 0
     for filing in filings:
         facts = json.loads((Path(settings.EDGAR_DIR) / "facts" / f"{filing['ticker']}.json").read_text())
