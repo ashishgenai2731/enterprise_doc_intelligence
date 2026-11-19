@@ -29,7 +29,7 @@ class AuditVerdict(BaseModel):
 
 def get_llm() -> ChatOllama:
     """Instantiates a ChatOllama client bound to the active event loop."""
-    return ChatOllama(model=settings.LLM_MODEL, temperature=0.0)
+    return ChatOllama(model=settings.LLM_MODEL, base_url=settings.OLLAMA_BASE_URL, temperature=0.0)
 
 
 def format_context(chunks: List[Dict[str, Any]]) -> str:
