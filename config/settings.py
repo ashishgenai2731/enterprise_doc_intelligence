@@ -19,6 +19,9 @@ class Settings(BaseSettings):
     # Ollama model the agents call. After QLoRA training, import the adapter into Ollama
     # (src/training/README.md) and set LLM_MODEL=mistral-fin in .env.
     LLM_MODEL: str = "mistral"
+    # Where the Ollama server listens. Inside Docker, "localhost" is the container itself,
+    # so docker-compose.yml points this at the Mac: http://host.docker.internal:11434
+    OLLAMA_BASE_URL: str = "http://localhost:11434"
     # Base for QLoRA. Must be the same model Ollama serves as `mistral` (v0.3, vocab 32,768),
     # or the adapter cannot be loaded on top of it.
     BASE_MODEL_NAME: str = "mistralai/Mistral-7B-Instruct-v0.3"
@@ -27,9 +30,10 @@ class Settings(BaseSettings):
     CHUNK_SIZE: int = 512
     CHUNK_OVERLAP: int = 50
 
-    # Local copy of every indexed chunk ({'id', 'text'} per line).
-    # BM25 needs the raw text in memory; Pinecone only gives us vectors back.
-    CORPUS_PATH: str = "data/corpus.jsonl"
+    # Local copy of every indexed chunk ({'id', 'text', 'metadata'} per line).
+    # BM25 counts words across every chunk, so it needs all texts in memory; Pinecone can't
+    # hand back all 98k texts per question (it returns text only for the matches it finds).
+    CORPUS_PATH: str = "data/edgar/corpus.jsonl"
 
     # SEC EDGAR blocks requests whose User-Agent has no contact email ("Name email@domain").
     # Set it in .env, not here.

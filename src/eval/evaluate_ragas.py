@@ -38,7 +38,7 @@ def run_evaluation(test_samples: list[dict]):
 
     # Below two steps if you don't have credit in OPENAI
     # Initialize local Ollama evaluator LLM & local embedding model
-    eval_llm = LangchainLLMWrapper(ChatOllama(model="mistral", temperature=0.0))
+    eval_llm = LangchainLLMWrapper(ChatOllama(model=settings.LLM_MODEL, base_url=settings.OLLAMA_BASE_URL, temperature=0.0))
     eval_embeddings = LangchainEmbeddingsWrapper(
         HuggingFaceEmbeddings(model_name=settings.EMBEDDING_MODEL_NAME)
     )
