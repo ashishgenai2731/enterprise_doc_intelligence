@@ -111,7 +111,7 @@ def query_document(request: QueryRequest):
 
     try:
         response: DocumentInsightResponse = client.chat.completions.create(
-            model="mistral",
+            model=settings.LLM_MODEL,
             response_model=DocumentInsightResponse,
             messages=[
                 {"role": "system", "content": system_prompt},

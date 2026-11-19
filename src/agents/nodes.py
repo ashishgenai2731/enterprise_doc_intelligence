@@ -3,6 +3,7 @@ import re
 from typing import Dict, Any, List, Optional
 from pydantic import BaseModel, Field
 from langchain_ollama import ChatOllama
+from config.settings import settings
 from src.agents.state import AgentState
 from src.agents.tools import get_retriever, call_mcp_python_repl
 from src.retrieval.query_filters import detect_filters
@@ -28,7 +29,7 @@ class AuditVerdict(BaseModel):
 
 def get_llm() -> ChatOllama:
     """Instantiates a ChatOllama client bound to the active event loop."""
-    return ChatOllama(model="mistral", temperature=0.0)
+    return ChatOllama(model=settings.LLM_MODEL, temperature=0.0)
 
 
 def format_context(chunks: List[Dict[str, Any]]) -> str:
@@ -89,11 +90,10 @@ def rag_analyst_node(state: AgentState) -> Dict[str, Any]:
     }
 
 
-async def code_executor_node(state: AgentState) -> Dict[str, Any]:
-    query = state["user_query"]
-    context_text = format_context(state.get("rag_context", []))
-
-    prompt = (
+def build_code_prompt(query: str, context_text: str) -> str:
+    """Prompt for the Code Executor. Shared with src/training/dataset_prep.py, so the fine-tuned
+    model is trained on exactly the prompt it sees in production."""
+    return (
         "You are a quantitative financial analyst.\n"
         f"User Question: {query}\n"
         f"Financial Context:\n{context_text}\n\n"
@@ -105,6 +105,13 @@ async def code_executor_node(state: AgentState) -> Dict[str, Any]:
         "3. Assign the final output to a variable named `result`.\n"
         "4. Wrap code inside ```python ``` block."
     )
+
+
+async def code_executor_node(state: AgentState) -> Dict[str, Any]:
+    query = state["user_query"]
+    context_text = format_context(state.get("rag_context", []))
+
+    prompt = build_code_prompt(query, context_text)
 
     llm = get_llm()
     response = await llm.ainvoke(prompt)

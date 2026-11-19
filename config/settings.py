@@ -16,7 +16,12 @@ class Settings(BaseSettings):
     # Model Configurations
     EMBEDDING_MODEL_NAME: str = "BAAI/bge-large-en-v1.5"
     RERANKER_MODEL_NAME: str = "BAAI/bge-reranker-large"
-    BASE_MODEL_NAME: str = "mistralai/Mistral-7B-Instruct-v0.2"
+    # Ollama model the agents call. After QLoRA training, import the adapter into Ollama
+    # (src/training/README.md) and set LLM_MODEL=mistral-fin in .env.
+    LLM_MODEL: str = "mistral"
+    # Base for QLoRA. Must be the same model Ollama serves as `mistral` (v0.3, vocab 32,768),
+    # or the adapter cannot be loaded on top of it.
+    BASE_MODEL_NAME: str = "mistralai/Mistral-7B-Instruct-v0.3"
 
     # Chunking Parameters
     CHUNK_SIZE: int = 512
