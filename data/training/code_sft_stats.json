@@ -1,0 +1,42 @@
+{
+  "questions": 216,
+  "kept": 216,
+  "context_patched": 81,
+  "no_chunk_with_figure": 0,
+  "code_mismatch": 0,
+  "train": 194,
+  "val": 22,
+  "companies": [
+    "AAPL",
+    "ADBE",
+    "CSCO",
+    "NFLX",
+    "PEP",
+    "PG"
+  ],
+  "excluded_eval_companies": [
+    "ABBV",
+    "AMD",
+    "AMZN",
+    "CAT",
+    "CRM",
+    "GOOGL",
+    "HD",
+    "INTC",
+    "JNJ",
+    "KO",
+    "LLY",
+    "MCD",
+    "META",
+    "MRK",
+    "MSFT",
+    "NKE",
+    "NVDA",
+    "ORCL",
+    "PFE",
+    "QCOM",
+    "TSLA",
+    "TXN",
+    "WMT"
+  ]
+}
