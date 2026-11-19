@@ -156,3 +156,33 @@ were run again on the 98,137-chunk index.
 - **The auditor checks that figures exist in the sources, not that they are the right line item.**
   Only 8 of 30 wrong answers were caught.
 - **A larger local model** (or a hosted one) on the same 60-question sample is the obvious next comparison.
+
+---
+
+## 8. Semantic cache (2026-11-18)
+
+**Calibration** (`scripts/calibrate_semantic_cache.py`, bge-large-en-v1.5, 12 company-years, 16 everyday
+rewordings each). Each row compares a new question with a cached one:
+
+| Pair | Pairs | Cosine range | Cosine ≥ 0.80 alone | Scope key + cosine ≥ 0.80 |
+|---|---|---|---|---|
+| Rewording of the same question (should reuse) | 192 | 0.73 – 0.91 | 81.2% | **81.2%** |
+| Other line item, same company and year | 2,608 | 0.58 – 0.90 | 14.0% | **0%** |
+| Same line item, previous year | 192 | 0.69 – 0.88 | 57.8% | **0%** |
+| Same line item, one segment ("in the Americas segment") | 192 | 0.72 – 0.88 | 51.0% | **0%** |
+| Same line item, one quarter ("for the fourth quarter only") | 192 | 0.71 – 0.89 | 56.8% | **0%** |
+
+Cosine similarity alone cannot be made safe: the wrong-figure pairs reach 0.90, above most true rewordings.
+The scope key (company/year filter + years written + line items, segment/quarter/adjusted questions never
+cached) removes every wrong reuse, and the threshold only has to separate what is left.
+Line-item detection maps all 1,074 golden questions to the right item.
+
+**End to end** (real API, Redis 7, Mistral-7B, Pinecone; `/api/v1/agent/analyze`):
+
+| Question | Time | Cached | Similarity |
+|---|---|---|---|
+| What was Apple's total revenue in fiscal 2024? | 193.39 s (agent, audit passed, 1 round) | no | – |
+| How much revenue did Apple make in FY2024? | 0.06 s | yes | 0.837 |
+| Apple total net sales for fiscal year 2024? | 0.04 s | yes | 0.916 |
+
+Tests: 30 new offline unit tests (`tests/unit/test_semantic_cache.py`) with a fake Redis and embedder.

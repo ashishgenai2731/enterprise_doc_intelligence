@@ -1,0 +1,87 @@
+{
+  "positive": {
+    "pairs": 192,
+    "similarity_min": 0.727,
+    "similarity_median": 0.846,
+    "similarity_max": 0.906,
+    "same_scope_key": "192 of 192",
+    "same_scope_similarity_range": [
+      0.727,
+      0.906
+    ]
+  },
+  "other_metric": {
+    "pairs": 2608,
+    "similarity_min": 0.58,
+    "similarity_median": 0.739,
+    "similarity_max": 0.897,
+    "same_scope_key": "0 of 2608",
+    "same_scope_similarity_range": null
+  },
+  "year_swap": {
+    "pairs": 192,
+    "similarity_min": 0.692,
+    "similarity_median": 0.806,
+    "similarity_max": 0.882,
+    "same_scope_key": "0 of 192",
+    "same_scope_similarity_range": null
+  },
+  "segment": {
+    "pairs": 192,
+    "similarity_min": 0.716,
+    "similarity_median": 0.801,
+    "similarity_max": 0.883,
+    "same_scope_key": "0 of 192",
+    "same_scope_similarity_range": null
+  },
+  "quarter": {
+    "pairs": 192,
+    "similarity_min": 0.711,
+    "similarity_median": 0.807,
+    "similarity_max": 0.89,
+    "same_scope_key": "0 of 192",
+    "same_scope_similarity_range": null
+  },
+  "hit_rate_at_0.75": {
+    "positive": "cosine only 99.5% | scope key + cosine 99.5%",
+    "other_metric": "cosine only 43.6% | scope key + cosine 0.0%",
+    "year_swap": "cosine only 91.7% | scope key + cosine 0.0%",
+    "segment": "cosine only 92.7% | scope key + cosine 0.0%",
+    "quarter": "cosine only 90.1% | scope key + cosine 0.0%"
+  },
+  "hit_rate_at_0.8": {
+    "positive": "cosine only 81.2% | scope key + cosine 81.2%",
+    "other_metric": "cosine only 14.0% | scope key + cosine 0.0%",
+    "year_swap": "cosine only 57.8% | scope key + cosine 0.0%",
+    "segment": "cosine only 51.0% | scope key + cosine 0.0%",
+    "quarter": "cosine only 56.8% | scope key + cosine 0.0%"
+  },
+  "hit_rate_at_0.85": {
+    "positive": "cosine only 44.8% | scope key + cosine 44.8%",
+    "other_metric": "cosine only 2.1% | scope key + cosine 0.0%",
+    "year_swap": "cosine only 6.2% | scope key + cosine 0.0%",
+    "segment": "cosine only 7.8% | scope key + cosine 0.0%",
+    "quarter": "cosine only 14.1% | scope key + cosine 0.0%"
+  },
+  "hit_rate_at_0.9": {
+    "positive": "cosine only 2.1% | scope key + cosine 2.1%",
+    "other_metric": "cosine only 0.0% | scope key + cosine 0.0%",
+    "year_swap": "cosine only 0.0% | scope key + cosine 0.0%",
+    "segment": "cosine only 0.0% | scope key + cosine 0.0%",
+    "quarter": "cosine only 0.0% | scope key + cosine 0.0%"
+  },
+  "company_years": [
+    "GOOGL-2025",
+    "AMD-2025",
+    "MSFT-2025",
+    "TSLA-2024",
+    "AAPL-2025",
+    "ABBV-2024",
+    "ORCL-2026",
+    "AMD-2024",
+    "META-2025",
+    "GOOGL-2024",
+    "AAPL-2024",
+    "CSCO-2026"
+  ]
+}

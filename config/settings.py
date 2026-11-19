@@ -40,6 +40,12 @@ class Settings(BaseSettings):
     REDIS_HOST: str = "localhost"
     REDIS_PORT: int = 6379
 
+    # Semantic cache for agent answers (src/cache/semantic_cache.py).
+    # 0.80 reuses 81% of rewordings of a cached question in scripts/calibrate_semantic_cache.py;
+    # wrong-year / wrong-line-item / segment / quarter questions are kept out by the scope key.
+    SEMANTIC_CACHE_THRESHOLD: float = 0.80
+    SEMANTIC_CACHE_TTL_SEC: int = 24 * 3600
+
     # Use SettingsConfigDict for Pydantic V2 compatibility
     # The extra="ignore" Parameter: By default, Pydantic V2 has strict validation. If it
     # encounters any environment variable in your .env file or terminal session that isn't explicitly
