@@ -156,37 +156,40 @@ python -m src.eval.golden_eval --golden data/eval/edgar_golden_qa.jsonl --out ed
 | Answers with valid citations | 85% |
 | Avg. latency per question | 100s |
 
-25 of the 30 misses are retrieval misses: the right statement row was not in any cited chunk. The other 5 had the right figure and picked the wrong one. On the original 25 Apple FY2015 questions, the big index scored **68%** against 52% on the single-PDF index, even though 17 of those questions name no company and search all 98,137 chunks. Full step-by-step timings and results: [`docs/PROJECT_METRICS.md`](docs/PROJECT_METRICS.md).
+25 of the 30 misses are retrieval misses: the right statement row was not in any cited chunk. The other 5 had the right figure and picked the wrong one. On the 25 hand-written Apple FY2015 questions the agent scores **64%**, even though 17 of them name no company and search all 98,355 chunks. Full step-by-step timings and results: [`docs/PROJECT_METRICS.md`](docs/PROJECT_METRICS.md).
 
 ### Apple FY2015 golden set (25 questions, hand-written)
 
-A 25-question golden set (`data/eval/golden_qa.jsonl`) built from the Apple FY2015 10-K: 13 direct lookups and 12 computed metrics (growth rates, margins, ratios, free cash flow). Every expected answer cites the parsed statement row it comes from. Scoring checks the number in the final report (±0.1 pts for percentages, ±0.5% for amounts) and whether the auditor caught the wrong ones.
+A 25-question golden set (`data/eval/golden_qa.jsonl`) built from Apple's FY2015 10-K: 13 direct lookups and 12 computed metrics (growth rates, margins, ratios, free cash flow). Every expected answer cites the parsed statement row it comes from. Scoring checks the number in the final report (±0.1 pts for percentages, ±0.5% for amounts) and whether the auditor caught the wrong ones.
 
 ```bash
-python -m src.eval.golden_eval            # full run, writes data/eval/results.{json,md}
+python -m src.eval.golden_eval            # full run, writes data/eval/apple2015.{json,md}
 python -m src.eval.golden_eval --ids C02  # single question
 ```
 
-**Baseline on the single-PDF index (Mistral-7B via Ollama, hybrid retrieval on Pinecone):**
+**Results on the full 98,355-chunk index (Mistral-7B via Ollama):**
 
 | Metric | Value |
 |---|---|
-| Accuracy (all 25) | **52%** |
-| Accuracy, direct lookups | 69% |
-| Accuracy, computed metrics | 33% |
-| Audit pass rate | 88% |
-| False-pass rate (wrong but passed, of passed) | 45% |
-| Wrong answers caught by audit | 2 of 12 |
-| Answers with valid citations | 96% |
-| Avg. graph iterations | 1.52 |
-| Avg. latency per question | 148s |
+| Accuracy (all 25) | **64%** |
+| Accuracy, direct lookups | 77% (10 of 13) |
+| Accuracy, computed metrics | 50% (6 of 12) |
+| Accuracy, questions naming the company (filtered to Apple FY2015) | 75% (6 of 8) |
+| Accuracy, questions naming no company (search all 90 filings) | 59% (10 of 17) |
+| Audit pass rate | 76% |
+| False-pass rate (wrong but passed, of passed) | 26% |
+| Wrong answers caught by audit | 4 of 9 |
+| Answers with valid citations | 76% |
+| Avg. graph iterations | 1.76 |
+| Avg. latency per question | 147s (run alongside a retrieval benchmark on the same GPU) |
 
-**What the failures show** (per-question reports in `data/eval/results.json`):
-* **Wrong inputs, right arithmetic.** Most computed-metric misses use a wrong row as input (e.g. a segment or quarterly figure instead of the consolidated one). The sandbox computes them correctly, so the grounding check passes them.
-* **The auditor rarely catches wrong-but-plausible numbers** (2 of 12). It checks that figures exist in the sources, not that they are the right line item for the question.
-* **Unit slips** such as "$23.09 million" for a $23,089 million change.
+**What the 9 failures show** (per-question reports in `data/eval/apple2015.json`):
+* **Wrong row, right filing (5).** E.g. "net income in fiscal 2013" answered 48,999, which is 2013 *operating* income (truth 37,037). The sandbox computes correctly from whatever inputs it is given, so the grounding check passes them.
+* **Wrong company (2).** Questions that name no company get no metadata filter, and Home Depot's or Microsoft's filing outranks Apple's.
+* **Unit slip (1).** Diluted EPS of $9.22 reported as 0.0092.
+* **Made-up input (1).** Free cash flow computed from an operating cash flow "assumed from fiscal 2023".
 
-These are the targets for the next iteration: check that every input literal in the generated code appears in a retrieved row with the right year, and compare a stronger local model against Mistral-7B on this same set.
+These are the targets for the next iteration: check that every input literal in the generated code appears in a retrieved row with the right year, default to a filter when a question names a year but no company, and compare a stronger local model against Mistral-7B on this same set.
 
 ---
 

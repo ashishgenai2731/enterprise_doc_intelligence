@@ -39,7 +39,7 @@ The test set grows with the corpus because nobody writes the XBRL answers by han
 | 4 | Build golden Q&A from XBRL | 1,074 questions (592 lookup, 482 computed), 261 skipped | **61 s** first run, 291 s on a later re-run | `logs/golden_build.log` |
 | 5 | Unit tests | 36 passed, 0 failed | **5.8 s** | `logs/unit_tests.log` |
 | 6 | Agent eval, 60 sampled questions | scores in section 4 | **1 h 40 min** (5,996 s) | `logs/eval_60.log` |
-| 7 | Agent eval, old 25 Apple questions on the new index | scores in section 5 | **42 min** (2,509 s) | `logs/eval_apple2015_on_big_index.log` |
+| 7 | Agent eval, 25 hand-written Apple FY2015 questions | scores in section 5 | **61 min** (shared GPU) | `logs/eval_apple2015.log` |
 
 **Indexing details (step 3):**
 - Average 128 s per filing. The fastest was IBM at 27 s (its 10-K is short because the financial
@@ -108,26 +108,28 @@ computes correctly whenever it is given the right inputs.
 
 ---
 
-## 5. Regression check: the old 25 Apple questions on the big index
+## 5. The 25 hand-written Apple FY2015 questions on the full index
 
-The same 25 hand-written Apple FY2015 questions, first run on a 715-chunk index holding only that PDF,
-were run again on the 98,137-chunk index.
+The hand-written Apple FY2015 set, run against all 98,355 chunks.
 
-| Metric | Old index (715 chunks) | New index (98,137 chunks) |
-|---|---|---|
-| Accuracy (all 25) | 52% | **68%** |
-| Accuracy, lookups | 69% | 92% |
-| Accuracy, computed | 33% | 42% |
-| False-pass rate | 45% | 23% |
-| Wrong answers caught by auditor | 2 of 12 | 3 of 8 |
-| Avg. time per question | 148 s | 100 s |
+| Metric | Value |
+|---|---|
+| Accuracy (all 25) | **64%** |
+| Accuracy, lookups | 77% (10 of 13) |
+| Accuracy, computed | 50% (6 of 12) |
+| Accuracy, company named → filtered to Apple FY2015 | 75% (6 of 8) |
+| Accuracy, no company named → all 90 filings searched | 59% (10 of 17) |
+| False-pass rate | 26% |
+| Wrong answers caught by auditor | 4 of 9 |
+| Avg. time per question | 147 s |
 
-- 17 of these 25 questions don't name the company ("What was diluted EPS for fiscal 2015?").
-  So no filter applied, and they were answered against all 98,137 chunks from 90 filings.
-- Adding 137 times more data did not drown the right answer.
-- Part of the gain is likely the `[Apple Inc. (AAPL) 10-K, fiscal 2015]` header now on every chunk,
-  which the reranker can match. Mistral-7B output also varies between runs, so a 25-question
-  comparison is a direction, not a precise effect size.
+- 17 of these 25 questions don't name the company ("What was diluted EPS for fiscal 2015?"),
+  so no filter applies and they are answered against all 98,355 chunks from 90 filings.
+- Failures: 5 wrong rows from the right filing, 2 answered from another company's filing
+  (Home Depot, Microsoft), 1 unit slip (EPS 9.22 → 0.0092), 1 made-up input.
+- The run shared the M4 GPU with a retrieval benchmark, which inflates the time per question.
+  Mistral-7B output also varies between runs, so a 25-question score is a direction, not a precise effect size.
+- Log: `logs/eval_apple2015.log`; per-question reports: `data/eval/apple2015.json`.
 
 ---
 
@@ -142,7 +144,8 @@ were run again on the 98,137-chunk index.
 | 2026-10-31 11:06 | EDGAR pivot started: company list, SEC client, download |
 | 2026-10-31 11:19 | HTML table parser, XBRL golden builder, company/year filters |
 | 2026-10-31 ≈11:20 → 14:31 | Full indexing (89 filings) |
-| 2026-10-31 15:43 → 18:05 | Both agent evals |
+| 2026-10-31 15:43 → 18:05 | 60-question agent eval |
+| 2026-11-19 | Apple FY2015 re-indexed from its EDGAR HTML (one parser for every filing); unused first-version code removed; Docker API reaches Ollama and the BM25 corpus (PR #8); Apple FY2015 eval re-run |
 
 ---
 
