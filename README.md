@@ -1,7 +1,8 @@
-Markdown
 # Autonomous Financial Analyst & Auditor Platform
 
-An enterprise-grade, stateful multi-agent document intelligence platform built with **LangGraph**, **FastAPI**, **Pinecone**, and **Ollama**. The system executes hybrid RAG retrieval (Dense + Sparse), sandboxed Python quantitative execution, and adversarial self-correcting compliance auditing over complex SEC 10-K financial filings.
+An enterprise-grade, stateful agentic RAG platform (a 3-node LangGraph workflow) built with **LangGraph**, **FastAPI**, **Pinecone**, and **Ollama**. The system executes hybrid RAG retrieval (Dense + Sparse), sandboxed Python quantitative execution, and adversarial self-correcting compliance auditing over complex SEC 10-K financial filings.
+
+> **Multi-agent version:** for cross-company questions (a supervisor, parallel research agents, a quant agent and a deterministic auditor), see [filing-analyst-agents](https://github.com/ashishgenai2731/filing-analyst-agents). It builds on this repo and scores 16/16 vs this workflow's 1/16 on the same comparison questions.
 
 **Corpus:** 90 annual reports (10-K) from 30 US companies, all pulled from SEC EDGAR: fiscal years 2023–2026 for every company, plus Apple FY2015 for the hand-written test set. 5.2 million words, 98,355 indexed chunks. Every step's timing and result is in [`docs/PROJECT_METRICS.md`](docs/PROJECT_METRICS.md).
 
@@ -51,7 +52,7 @@ An enterprise-grade, stateful multi-agent document intelligence platform built w
 
 ## Core Features
 
-* **Stateful Orchestration:** Utilizes LangGraph `StateGraph` primitives to enforce guarded, deterministic multi-agent loops over open-ended prompt chains (max 3 rounds).
+* **Stateful Orchestration:** A LangGraph `StateGraph` runs a deterministic retrieve → compute → audit loop: code decides the path, and the LLM auditor's verdict and retry query drive up to 3 rounds.
 * **Hybrid RAG & Cross-Encoder Reranking:** Pinecone dense retrieval (BGE-large) and BM25 sparse retrieval are fused with Reciprocal Rank Fusion, then reranked by a BGE cross-encoder. BM25 runs in-process over a local corpus file (`data/edgar/corpus.jsonl`) with the same chunk IDs as Pinecone, on the same company/year subset.
 * **Sandboxed Code Execution over MCP:** Generated Python arithmetic runs in a separate FastMCP server process with a restricted builtin scope and a hard timeout (`SANDBOX_TIMEOUT_SEC`); runaway code is killed with its process.
 * **Structured, Double-Checked Auditing:** The auditor returns a typed verdict (`passed`, `unsupported_claims`, `retry_query`) instead of a magic string. A deterministic check then verifies every figure in the report appears in the retrieved sources or the sandbox output, so the LLM is not the only judge of its own numbers.
